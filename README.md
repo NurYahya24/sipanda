@@ -1,6 +1,6 @@
 # sipanda
 
-A new Flutter project.
+SIPANDA adalah Sistem Pindai Data Anak yang dibuat untuk memenuhi tugas program kerja individu yang berfokus pada tema besar kelompok KKN kami yaitu 'Selerong Sadar Stunting'. Dan pada kesempataan kali ini saya sebagai mahasiswa informatika ingin membuat aplikasi pendataan anak dengan tujuan untuk memudahkan pendataan yang sebelumnya semua dilakukan dengan menggunakan catatan. Dengan adanya aplikasi ini, saya berharap ini dapat mempermudah pendataan data anak pada 2 posyandu yang ada di Desa Selerong.
 
 ## Getting Started
 
