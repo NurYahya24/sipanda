@@ -1,4 +1,6 @@
+import 'package:d_chart/commons/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:d_chart/d_chart.dart';
 
 class graphM extends StatefulWidget {
   const graphM({super.key});
@@ -71,7 +73,6 @@ class _graphMState extends State<graphM> {
     {'bulan' : 12, 'BB' : 3},
     {'bulan' : 12, 'BB' : 4},
   ];
-
   List<Map<String, dynamic>> dataMin2SD = [
     {'bulan' :2, 'BB' :5},
     {'bulan' :3, 'BB' :4},
@@ -135,7 +136,6 @@ class _graphMState extends State<graphM> {
     {'bulan' :14, 'BB' :0},
     {'bulan' :14, 'BB' :1},
   ];
-
   List<Map<String, dynamic>> dataMin1SD = [
     {'bulan' :2, 'BB' :9},
     {'bulan' :3, 'BB' :9},
@@ -199,7 +199,6 @@ class _graphMState extends State<graphM> {
     {'bulan' :15, 'BB' :9},
     {'bulan' :16, 'BB' :0},
   ];
-
   List<Map<String, dynamic>> dataMedian = [
     {'bulan' :3, 'BB' :3},
     {'bulan' :4, 'BB' :5},
@@ -263,9 +262,294 @@ class _graphMState extends State<graphM> {
     {'bulan' :18, 'BB' :2},
     {'bulan' :18, 'BB' :3},
   ];
+  List<Map<String, dynamic>> dataPlus1SD = [
+    {'bulan' :3, 'BB' :9},
+    {'bulan' :5, 'BB' :1},
+    {'bulan' :6, 'BB' :3},
+    {'bulan' :7, 'BB' :2},
+    {'bulan' :7, 'BB' :8},
+    {'bulan' :8, 'BB' :4},
+    {'bulan' :8, 'BB' :8},
+    {'bulan' :9, 'BB' :2},
+    {'bulan' :9, 'BB' :6},
+    {'bulan' :9, 'BB' :9},
+    {'bulan' :10, 'BB' :2},
+    {'bulan' :10, 'BB' :5},
+    {'bulan' :10, 'BB' :8},
+    {'bulan' :11, 'BB' :0},
+    {'bulan' :11, 'BB' :3},
+    {'bulan' :11, 'BB' :5},
+    {'bulan' :11, 'BB' :7},
+    {'bulan' :12, 'BB' :0},
+    {'bulan' :12, 'BB' :2},
+    {'bulan' :12, 'BB' :5},
+    {'bulan' :12, 'BB' :7},
+    {'bulan' :12, 'BB' :9},
+    {'bulan' :13, 'BB' :2},
+    {'bulan' :13, 'BB' :4},
+    {'bulan' :13, 'BB' :6},
+    {'bulan' :13, 'BB' :9},
+    {'bulan' :14, 'BB' :1},
+    {'bulan' :14, 'BB' :3},
+    {'bulan' :14, 'BB' :5},
+    {'bulan' :14, 'BB' :8},
+    {'bulan' :15, 'BB' :0},
+    {'bulan' :15, 'BB' :2},
+    {'bulan' :15, 'BB' :4},
+    {'bulan' :15, 'BB' :6},
+    {'bulan' :15, 'BB' :8},
+    {'bulan' :16, 'BB' :0},
+    {'bulan' :16, 'BB' :2},
+    {'bulan' :16, 'BB' :4},
+    {'bulan' :16, 'BB' :6},
+    {'bulan' :16, 'BB' :8},
+    {'bulan' :17, 'BB' :0},
+    {'bulan' :17, 'BB' :2},
+    {'bulan' :17, 'BB' :4},
+    {'bulan' :17, 'BB' :6},
+    {'bulan' :17, 'BB' :8},
+    {'bulan' :18, 'BB' :0},
+    {'bulan' :18, 'BB' :2},
+    {'bulan' :18, 'BB' :4},
+    {'bulan' :18, 'BB' :6},
+    {'bulan' :18, 'BB' :8},
+    {'bulan' :19, 'BB' :0},
+    {'bulan' :19, 'BB' :2},
+    {'bulan' :19, 'BB' :4},
+    {'bulan' :19, 'BB' :6},
+    {'bulan' :19, 'BB' :8},
+    {'bulan' :20, 'BB' :0},
+    {'bulan' :20, 'BB' :2},
+    {'bulan' :20, 'BB' :4},
+    {'bulan' :20, 'BB' :6},
+    {'bulan' :20, 'BB' :8},
+    {'bulan' :21, 'BB' :0},
+  ];
+  List<Map<String, dynamic>> dataPlus2SD = [
+    {'bulan' :4, 'BB' :4},
+    {'bulan' :5, 'BB' :8},
+    {'bulan' :7, 'BB' :1},
+    {'bulan' :8, 'BB' :0},
+    {'bulan' :8, 'BB' :7},
+    {'bulan' :9, 'BB' :3},
+    {'bulan' :9, 'BB' :8},
+    {'bulan' :10, 'BB' :3},
+    {'bulan' :10, 'BB' :7},
+    {'bulan' :11, 'BB' :0},
+    {'bulan' :11, 'BB' :4},
+    {'bulan' :11, 'BB' :7},
+    {'bulan' :12, 'BB' :0},
+    {'bulan' :12, 'BB' :3},
+    {'bulan' :12, 'BB' :6},
+    {'bulan' :12, 'BB' :8},
+    {'bulan' :13, 'BB' :1},
+    {'bulan' :13, 'BB' :4},
+    {'bulan' :13, 'BB' :7},
+    {'bulan' :13, 'BB' :9},
+    {'bulan' :14, 'BB' :2},
+    {'bulan' :14, 'BB' :5},
+    {'bulan' :14, 'BB' :7},
+    {'bulan' :15, 'BB' :0},
+    {'bulan' :15, 'BB' :3},
+    {'bulan' :15, 'BB' :5},
+    {'bulan' :15, 'BB' :8},
+    {'bulan' :16, 'BB' :1},
+    {'bulan' :16, 'BB' :3},
+    {'bulan' :16, 'BB' :6},
+    {'bulan' :16, 'BB' :9},
+    {'bulan' :17, 'BB' :1},
+    {'bulan' :17, 'BB' :4},
+    {'bulan' :17, 'BB' :6},
+    {'bulan' :17, 'BB' :8},
+    {'bulan' :18, 'BB' :1},
+    {'bulan' :18, 'BB' :3},
+    {'bulan' :18, 'BB' :6},
+    {'bulan' :18, 'BB' :8},
+    {'bulan' :19, 'BB' :0},
+    {'bulan' :19, 'BB' :3},
+    {'bulan' :19, 'BB' :5},
+    {'bulan' :19, 'BB' :7},
+    {'bulan' :20, 'BB' :0},
+    {'bulan' :20, 'BB' :2},
+    {'bulan' :20, 'BB' :5},
+    {'bulan' :20, 'BB' :7},
+    {'bulan' :20, 'BB' :9},
+    {'bulan' :21, 'BB' :2},
+    {'bulan' :21, 'BB' :4},
+    {'bulan' :21, 'BB' :7},
+    {'bulan' :21, 'BB' :9},
+    {'bulan' :22, 'BB' :2},
+    {'bulan' :22, 'BB' :4},
+    {'bulan' :22, 'BB' :7},
+    {'bulan' :22, 'BB' :9},
+    {'bulan' :23, 'BB' :2},
+    {'bulan' :23, 'BB' :4},
+    {'bulan' :23, 'BB' :7},
+    {'bulan' :23, 'BB' :9},
+    {'bulan' :24, 'BB' :2},
+  ];
+  List<Map<String, dynamic>> dataPlus3SD = [
+    {'bulan' :5, 'BB' :0},
+    {'bulan' :6, 'BB' :6}, 
+    {'bulan' :8, 'BB' :0}, 
+    {'bulan' :9, 'BB' :0}, 
+    {'bulan' :9, 'BB' :7}, 
+    {'bulan' :10, 'BB' :4},
+    {'bulan' :10, 'BB' :9},
+    {'bulan' :11, 'BB' :4},
+    {'bulan' :11, 'BB' :9},
+    {'bulan' :12, 'BB' :3},
+    {'bulan' :12, 'BB' :7},
+    {'bulan' :13, 'BB' :0},
+    {'bulan' :13, 'BB' :3},
+    {'bulan' :13, 'BB' :7},
+    {'bulan' :14, 'BB' :0},
+    {'bulan' :14, 'BB' :3},
+    {'bulan' :14, 'BB' :6},
+    {'bulan' :14, 'BB' :9},
+    {'bulan' :15, 'BB' :3},
+    {'bulan' :15, 'BB' :6},
+    {'bulan' :15, 'BB' :9},
+    {'bulan' :16, 'BB' :2},
+    {'bulan' :16, 'BB' :5},
+    {'bulan' :16, 'BB' :8},
+    {'bulan' :17, 'BB' :1},
+    {'bulan' :17, 'BB' :5},
+    {'bulan' :17, 'BB' :8},
+    {'bulan' :18, 'BB' :1},
+    {'bulan' :18, 'BB' :4},
+    {'bulan' :18, 'BB' :7},
+    {'bulan' :19, 'BB' :0},
+    {'bulan' :19, 'BB' :3},
+    {'bulan' :19, 'BB' :6},
+    {'bulan' :19, 'BB' :9},
+    {'bulan' :20, 'BB' :2},
+    {'bulan' :20, 'BB' :4},
+    {'bulan' :20, 'BB' :7},
+    {'bulan' :21, 'BB' :0},
+    {'bulan' :21, 'BB' :3},
+    {'bulan' :21, 'BB' :6},
+    {'bulan' :21, 'BB' :9},
+    {'bulan' :22, 'BB' :1},
+    {'bulan' :22, 'BB' :4},
+    {'bulan' :22, 'BB' :7},
+    {'bulan' :23, 'BB' :0},
+    {'bulan' :23, 'BB' :3},
+    {'bulan' :23, 'BB' :6},
+    {'bulan' :23, 'BB' :9},
+    {'bulan' :24, 'BB' :2},
+    {'bulan' :24, 'BB' :5},
+    {'bulan' :24, 'BB' :8},
+    {'bulan' :25, 'BB' :1},
+    {'bulan' :25, 'BB' :4},
+    {'bulan' :25, 'BB' :7},
+    {'bulan' :26, 'BB' :0},
+    {'bulan' :26, 'BB' :3},
+    {'bulan' :26, 'BB' :6},
+    {'bulan' :26, 'BB' :9},
+    {'bulan' :27, 'BB' :2},
+    {'bulan' :27, 'BB' :6},
+    {'bulan' :27, 'BB' :9},
+  ];
+
+    
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    List<NumericData> chartDataMin3SD = dataMin3SD.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    List<NumericData> chartDataMin2SD = dataMin2SD.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    List<NumericData> chartDataMin1SD = dataMin1SD.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    List<NumericData> chartDataMedian = dataMedian.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    List<NumericData> chartDataPlus1SD = dataPlus1SD.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    List<NumericData> chartDataPlus2SD = dataPlus2SD.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    List<NumericData> chartDataPlus3SD = dataPlus3SD.map((data) {
+      return NumericData(
+        domain: data['bulan'],
+        measure: data['BB'],
+      );
+    }).toList();
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(title: const Text("Testing Antropometri Balita Laki-laki"),),
+        body: Center(
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 50,
+                child: Card(
+                  child: Center(
+                    child: Text(
+                      "KSM Laki-laki",
+                      style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              AspectRatio(
+                aspectRatio: 1 / 1,
+                child: Card(
+                  child: DChartLineN(
+                    groupList: [
+                      NumericGroup(
+                        id: "-3 SD", 
+                        data: chartDataMin3SD),
+                      NumericGroup(
+                        id: "-2 SD", 
+                        data: chartDataMin2SD),
+                      NumericGroup(
+                        id: "-1 SD", 
+                        data: chartDataMin1SD),
+                      NumericGroup(
+                        id: "Median", 
+                        data: chartDataMedian),
+                      NumericGroup(
+                        id: "+1 SD", 
+                        data: chartDataPlus1SD),
+                      NumericGroup(
+                        id: "+2 SD", 
+                        data: chartDataPlus2SD),
+                      NumericGroup(
+                        id: "+3 SD", 
+                        data: chartDataPlus3SD),
+                    ]
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ));
   }
 }

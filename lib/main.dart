@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipanda/graph/graphM.dart';
 import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/login.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const InputDataPage(),
+      home: const graphM(),
     );
   }
 }
