@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipanda/graph/graphF.dart';
 import 'package:sipanda/graph/graphM.dart';
 import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/login.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const graphM(),
+      home: const InputDataPage(),
     );
   }
 }
@@ -53,7 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
