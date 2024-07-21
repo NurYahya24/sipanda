@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963193074662",
+    "project_id": "sipanda-8ad69",
+    "storage_bucket": "sipanda-8ad69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963193074662:android:7b7463e74952da44fd1c27",
+        "android_client_info": {
+          "package_name": "com.example.sipanda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIYJS1x_G51kN10knrv1nVvVDbKjsru2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
