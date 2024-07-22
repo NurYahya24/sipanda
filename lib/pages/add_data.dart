@@ -9,7 +9,19 @@ class InputDataPage extends StatefulWidget {
 
 class _InputDataPageState extends State<InputDataPage> {
   final _formKey = GlobalKey<FormState>();
-  String? _selectedGender;
+  String? _selectedGender, _selectedPlace;
+
+  void _handleGenderChange(String? value) {
+  setState(() {
+    _selectedGender = value;
+  });
+}
+
+void _handlePlaceChange(String? value) {
+  setState(() {
+    _selectedPlace = value;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +44,7 @@ class _InputDataPageState extends State<InputDataPage> {
                 children: [
                   const SizedBox(height: 50),
                   const Text(
-                    'Input Data',
+                    'Form Data Bayi',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -41,26 +53,28 @@ class _InputDataPageState extends State<InputDataPage> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Please enter the required information',
+                    'Silahkan Lengkapi Data Pada Form Berikut',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),
                   ),
                   const SizedBox(height: 50),
+                  _radioButton('Posyandu', Icons.add_location, 'Anggrek', 'Cempaka', _selectedPlace, _handlePlaceChange),
+                  const SizedBox(height: 20),
                   _textField('Nama Bayi', Icons.person, false),
                   const SizedBox(height: 20),
                   _textField('Tanggal Lahir', Icons.calendar_today, false),
                   const SizedBox(height: 20),
-                  _jenisKelamin(),
+                  _radioButton('Jenis Kelamin', Icons.wc, 'Laki-laki', 'Perempuan', _selectedGender, _handleGenderChange),
                   const SizedBox(height: 20),
                   _textField('Nama Orang Tua (Ayah/Ibu)', Icons.people, false),
                   const SizedBox(height: 20),
                   _textField('Alamat', Icons.home, false),
                   const SizedBox(height: 20),
-                  _bbDanPB(),
+                  _spaceBetweenField('BB Lahir (kg)', 'PB Lahir (cm)', Icons.monitor_weight, Icons.height),
                   const SizedBox(height: 20),
-                  _textField('Anak Ke-', Icons.format_list_numbered, false),
+                  _spaceBetweenField('LK Lahir (cm)', 'Anak Ke-', Icons.child_care, Icons.format_list_numbered),
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
@@ -111,11 +125,11 @@ class _InputDataPageState extends State<InputDataPage> {
           borderSide: BorderSide.none,
         ),
       ),
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.blueGrey),
     );
   }
 
-  Widget _jenisKelamin() {
+  Widget _radioButton(String judul, IconData icons, String firstOption, String secondOption, String? groupV, void Function(String?) onChanged) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white70,
@@ -126,13 +140,13 @@ class _InputDataPageState extends State<InputDataPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Icon(Icons.wc, color: Colors.blueGrey),
+                Icon(icons, color: Colors.blueGrey),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Jenis Kelamin',
+                    judul,
                     style: TextStyle(
                       color: Colors.blueGrey,
                       fontSize: 16,
@@ -147,29 +161,21 @@ class _InputDataPageState extends State<InputDataPage> {
                 Expanded(
                   child: RadioListTile<String>(
                     contentPadding: EdgeInsets.zero,
-                    title: const Text('Laki-laki', style: TextStyle(color: Colors.blueGrey)),
-                    value: 'Laki-laki',
-                    groupValue: _selectedGender,
+                    title: Text(firstOption, style: Theme.of(context).textTheme.displaySmall),
+                    value: firstOption,
+                    groupValue: groupV,
                     activeColor: Colors.blueGrey, 
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
+                    onChanged: onChanged
                   ),
                 ),
                 Expanded(
                   child: RadioListTile<String>(
                     contentPadding: EdgeInsets.zero,
-                    title: const Text('Perempuan', style: TextStyle(color: Colors.blueGrey)),
-                    value: 'Perempuan',
-                    groupValue: _selectedGender,
+                    title: Text(secondOption, style: Theme.of(context).textTheme.displaySmall),
+                    value: secondOption,
+                    groupValue: groupV,
                     activeColor: Colors.blueGrey, 
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
+                    onChanged: onChanged
                   ),
                 ),
               ],
@@ -180,15 +186,15 @@ class _InputDataPageState extends State<InputDataPage> {
     );
   }
 
-  Widget _bbDanPB() {
+  Widget _spaceBetweenField(String first, String second, IconData icon1, IconData icon2) {
     return Row(
       children: [
         Expanded(
-          child: _textField('BB Lahir (kg)', Icons.monitor_weight, false),
+          child: _textField(first, icon1, false),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: _textField('PB Lahir (cm)', Icons.height, false),
+          child: _textField(second, icon2, false),
         ),
       ],
     );

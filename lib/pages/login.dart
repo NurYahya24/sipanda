@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:sipanda/auth/auth.dart';
 import 'package:sipanda/pages/add_data.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
+  bool _loading = false;
+
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _ctrlEmail = TextEditingController();
+
+  final TextEditingController _ctrlPassword = TextEditingController();
 
   void togglePasswordVisibility() {
     setState(() {
       isPasswordVisible = !isPasswordVisible;
     });
+  }
+
+  handleSubmit() async {
+    if(!_formKey.currentState!.validate()) return;
+    final email = _ctrlEmail.value.text;
+    final password = _ctrlPassword.value.text;
+    setState(() => _loading = true);
+    await Auth().login(email, password);
+    setState(() => _loading = false);
   }
 
   @override
@@ -28,7 +46,10 @@ class _LoginPageState extends State<LoginPage> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
+        child: 
+        Form(
+          key: _formKey,
+          child:  Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -55,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 50),
                 TextFormField(
+                  controller: _ctrlEmail,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Email is still empty';
@@ -72,10 +94,11 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.blueGrey),
                 ),
                 const SizedBox(height: 30),
                 TextFormField(
+                  controller: _ctrlPassword,
                   obscureText: !isPasswordVisible,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -101,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.blueGrey),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -121,20 +144,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                   Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const InputDataPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                  onPressed: () => handleSubmit(),
+                  child : _loading?
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.blue,
+                      strokeWidth: 2,
                     ),
-                  ),
-                  child: const Text(
+                  )
+                  : Text(
                     'Login',
                     style: TextStyle(
                       color: Colors.blue,
@@ -142,38 +162,21 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Don\'t have a account? ',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        
-                      },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    )
-                  ],
-                )
+                
               ],
             ),
           ),
         ),
+        ) 
       ),
     );
   }

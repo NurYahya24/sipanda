@@ -41,47 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCMwhrQZHH4QvehbVNOXnSmMsm9cryRrew',
-    appId: '1:963193074662:web:ce594bdb4da7dae1fd1c27',
-    messagingSenderId: '963193074662',
-    projectId: 'sipanda-8ad69',
-    authDomain: 'sipanda-8ad69.firebaseapp.com',
-    storageBucket: 'sipanda-8ad69.appspot.com',
+    apiKey: 'AIzaSyBWkbLu1yhUrsIdT_8KJTaUwgfel_yihYs',
+    appId: '1:136176657126:web:04d1002a94e856e15d5127',
+    messagingSenderId: '136176657126',
+    projectId: 'sipanda-847b0',
+    authDomain: 'sipanda-847b0.firebaseapp.com',
+    storageBucket: 'sipanda-847b0.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBIYJS1x_G51kN10knrv1nVvVDbKjsru2w',
-    appId: '1:963193074662:android:7b7463e74952da44fd1c27',
-    messagingSenderId: '963193074662',
-    projectId: 'sipanda-8ad69',
-    storageBucket: 'sipanda-8ad69.appspot.com',
+    apiKey: 'AIzaSyCYMFfgPC85ob_y3lzUzzsiwrlpycExdRA',
+    appId: '1:136176657126:android:07ee385b3b1646345d5127',
+    messagingSenderId: '136176657126',
+    projectId: 'sipanda-847b0',
+    storageBucket: 'sipanda-847b0.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCzZJKx-kEZl9b58C0MlljPms6iEIxOp5Y',
-    appId: '1:963193074662:ios:dc097ed9c6df5aa1fd1c27',
-    messagingSenderId: '963193074662',
-    projectId: 'sipanda-8ad69',
-    storageBucket: 'sipanda-8ad69.appspot.com',
+    apiKey: 'AIzaSyDMewQUst2-STlDHvdZ0r41vhXaW0CYg_I',
+    appId: '1:136176657126:ios:2854783498d4e3315d5127',
+    messagingSenderId: '136176657126',
+    projectId: 'sipanda-847b0',
+    storageBucket: 'sipanda-847b0.appspot.com',
     iosBundleId: 'com.example.sipanda',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCzZJKx-kEZl9b58C0MlljPms6iEIxOp5Y',
-    appId: '1:963193074662:ios:dc097ed9c6df5aa1fd1c27',
-    messagingSenderId: '963193074662',
-    projectId: 'sipanda-8ad69',
-    storageBucket: 'sipanda-8ad69.appspot.com',
+    apiKey: 'AIzaSyDMewQUst2-STlDHvdZ0r41vhXaW0CYg_I',
+    appId: '1:136176657126:ios:2854783498d4e3315d5127',
+    messagingSenderId: '136176657126',
+    projectId: 'sipanda-847b0',
+    storageBucket: 'sipanda-847b0.appspot.com',
     iosBundleId: 'com.example.sipanda',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCMwhrQZHH4QvehbVNOXnSmMsm9cryRrew',
-    appId: '1:963193074662:web:26c27fdbed076abefd1c27',
-    messagingSenderId: '963193074662',
-    projectId: 'sipanda-8ad69',
-    authDomain: 'sipanda-8ad69.firebaseapp.com',
-    storageBucket: 'sipanda-8ad69.appspot.com',
+    apiKey: 'AIzaSyBWkbLu1yhUrsIdT_8KJTaUwgfel_yihYs',
+    appId: '1:136176657126:web:a3aac2a2698fc7205d5127',
+    messagingSenderId: '136176657126',
+    projectId: 'sipanda-847b0',
+    authDomain: 'sipanda-847b0.firebaseapp.com',
+    storageBucket: 'sipanda-847b0.appspot.com',
   );
 
 }
