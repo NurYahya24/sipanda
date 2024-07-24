@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/contents/category.dart';
 
 class Home extends StatefulWidget {
@@ -18,11 +20,11 @@ class _HomeState extends State<Home> {
         body: Column(
           children: const [
             AppsBar(),
-            Bodies(),
+            Expanded(child: Bodies(),)
           ],
         ),
       ), 
-      );
+    );
   }
 }
 
@@ -42,6 +44,7 @@ class Bodies extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,)
             ],
           ),),
+          Expanded(child: 
           GridView.builder(
             shrinkWrap: true,
             itemCount: CategoryList.length,
@@ -49,7 +52,7 @@ class Bodies extends StatelessWidget {
               horizontal: 20,
               vertical: 8
             ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.8,
               crossAxisSpacing: 20,
@@ -59,14 +62,14 @@ class Bodies extends StatelessWidget {
                 category : CategoryList[index]
               );
             })
+          )
+          
       ],
     );
   }
 }
-
 class AppsBar extends StatelessWidget {
   const AppsBar({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,30 +86,55 @@ class AppsBar extends StatelessWidget {
       begin: Alignment.center,
       end: FractionalOffset.bottomCenter,)
       ),
-      child: Column(
+      child: 
+              StreamBuilder(
+                stream: whoAmI(), 
+                builder: (context, snapshot){
+                  switch (snapshot.connectionState){
+                    case ConnectionState.waiting:
+                      return Text(
+                        "Loading....",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      );
+                    default:
+                      int indeks = 0;
+                      int panjang = snapshot.data?.docs.length as int;
+                      for (int i =0; i<panjang; i++){
+                        if(snapshot.data!.docs[i].id == FirebaseAuth.instance.currentUser!.uid){
+                          indeks = i;
+                        }
+                      }if(snapshot.hasError) {
+                        return Text("Error Saat Membaca Data");
+                      }else{
+                        return 
+                        Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Hello, USERNAME",
+                        Flexible(child: Text(
+                "Halo, "+ snapshot.data?.docs[indeks]["nama"],
                 style: Theme.of(context).textTheme.titleLarge,
-              )
-            ],
+              ),
+              )],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Level",
+                snapshot.data?.docs[indeks]["level"],
                 style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
               )
             ],
           ),
         ],
-      ),
+      );
+                      }
+                  }
+                })
+            
     );
   }
 }

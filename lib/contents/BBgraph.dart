@@ -12,5 +12,5 @@ class BBgraph{
 }
 
 List<BBgraph> BBGraphMale = [
-  
+  BBgraph(bulan: 0, score: 2.1, garis: '-3SD'),
 ];
