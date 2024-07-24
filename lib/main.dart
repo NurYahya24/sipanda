@@ -1,11 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sipanda/firebase_options.dart';
-import 'package:sipanda/graph/graphF.dart';
-import 'package:sipanda/graph/graphM.dart';
-import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/home.dart';
 import 'package:sipanda/pages/login.dart';
 
@@ -58,9 +54,9 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
           if(snapshot.hasData){
-            return Home();
+            return const Home();
           }else{
-            return LoginPage();
+            return const LoginPage();
           }
         },),
         debugShowCheckedModeBanner: false,
