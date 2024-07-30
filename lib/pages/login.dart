@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 200, 
                       ),
                       const Text(
-                        'Welcome Back!',
+                        'Selamat Datang!',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const Text(
-                        'Please login to your account',
+                        'Masuk Dengan Akun Anda',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _ctrlEmail,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Email is still empty';
+                            return 'Email tidak boleh kosong';
                           }
                           return null;
                         },
@@ -99,12 +99,12 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: !isPasswordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password is still empty';
+                            return 'Kata Sandi tidak boleh kosong';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: 'Password',
+                          hintText: 'Kata Sandi',
                           hintStyle: const TextStyle(color: Colors.blueGrey),
                           prefixIcon: const Icon(Icons.lock, color: Colors.blueGrey),
                           suffixIcon: GestureDetector(
@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             onPressed: () {},
                             child: const Text(
-                              'Forgot Password?',
+                              'Lupa Kata Sandi?',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 )
                               : Text(
-                                  'Login',
+                                  'Masuk',
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 18,
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            'Don\'t have a account? ',
+                            'Belum Punya Akun? ',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -190,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             },
                             child: const Text(
-                              'Sign Up',
+                              'Daftar',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.blue,

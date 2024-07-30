@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/contents/category.dart';
+import 'package:sipanda/pages/login.dart';
+import 'package:sipanda/pages/read_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -146,6 +148,12 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+         Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => Read_Data_Page()));
+      },
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

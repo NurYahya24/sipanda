@@ -12,7 +12,6 @@ class _RegisPageState extends State<RegisPage> {
   bool isPasswordVisible = false;
   bool _loading = false;
   String? _posyandu;
-  String? _level;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _ctrlEmail = TextEditingController();
@@ -31,18 +30,21 @@ class _RegisPageState extends State<RegisPage> {
     final email = _ctrlEmail.text;
     final name = _ctrlName.text;
     final posyandu = _posyandu;
-    final level = _level;
+    const level = "Nonaktif";
     final password = _ctrlPassword.text;
+    setState(() => _loading = true);
     if (password != _ctrlConfirmPassword.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Passwords do not match'),
+          content: Text('Mohon periksa Kata Sandi'),
           backgroundColor: Colors.red,
         ),
       );
       setState(() => _loading = false);
       return;
     }
+    await Auth().regis(email, password, name, posyandu.toString(), level.toString());
+    setState(() => _loading = false);
   }
 
   @override
@@ -71,7 +73,7 @@ class _RegisPageState extends State<RegisPage> {
                         height: 200,
                       ),
                       const Text(
-                        'Create an Account',
+                        'Daftar Akun Baru',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
@@ -79,7 +81,7 @@ class _RegisPageState extends State<RegisPage> {
                         ),
                       ),
                       const Text(
-                        'Please fill in the details below',
+                        'Silahkan Lengkapi Data',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -90,7 +92,7 @@ class _RegisPageState extends State<RegisPage> {
                         controller: _ctrlEmail,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Email is still empty';
+                            return 'Email tidak boleh kosong';
                           }
                           return null;
                         },
@@ -112,12 +114,12 @@ class _RegisPageState extends State<RegisPage> {
                         controller: _ctrlName,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Name is still empty';
+                            return 'Nama tidak boleh kosong';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: 'Name',
+                          hintText: 'Nama',
                           hintStyle: const TextStyle(color: Colors.blueGrey),
                           prefixIcon: const Icon(Icons.person, color: Colors.blueGrey),
                           filled: true,
@@ -130,110 +132,38 @@ class _RegisPageState extends State<RegisPage> {
                         style: const TextStyle(color: Colors.blueGrey),
                       ),
                       const SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Column(
-                          children: [
-                            const ListTile(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                              title: Text(
-                                'Posyandu',
-                                style: TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              leading: Icon(Icons.local_hospital, color: Colors.blueGrey),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: const Text(
-                                      'Anggrek',
-                                      style: TextStyle(
-                                        color: Colors.blueGrey,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    leading: Radio<String>(
-                                      value: 'Anggrek',
-                                      groupValue: _posyandu,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _posyandu = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: const Text(
-                                      'Cempaka',
-                                      style: TextStyle(
-                                        color: Colors.blueGrey,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    leading: Radio<String>(
-                                      value: 'Cempaka',
-                                      groupValue: _posyandu,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _posyandu = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
                       DropdownButtonFormField<String>(
-                        value: _level,
+                        value: _posyandu,
                         items: const [
                           DropdownMenuItem<String>(
                             value: null,
                             child: Text(
-                              'Select Level',
+                              'Pilih Posyandu',
                               style: TextStyle(color: Colors.blueGrey),
                             ),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Super Admin',
+                            value: 'Anggrek',
                             child: Text(
-                              'Super Admin',
+                              'Anggrek',
                               style: TextStyle(color: Colors.blueGrey),
                             ),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Kader',
+                            value: 'Cempaka',
                             child: Text(
-                              'Kader',
+                              'Cempaka',
                               style: TextStyle(color: Colors.blueGrey),
                             ),
                           ),
                         ],
                         onChanged: (newValue) {
                           setState(() {
-                            _level = newValue;
+                            _posyandu = newValue;
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: 'Select Level',
+                          hintText: 'Pilih Posyandu',
                           hintStyle: const TextStyle(color: Colors.blueGrey),
                           filled: true,
                           fillColor: Colors.white70,
@@ -244,7 +174,7 @@ class _RegisPageState extends State<RegisPage> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Level is still empty';
+                            return 'Posyandu tidak boleh kosong';
                           }
                           return null;
                         },
@@ -255,12 +185,12 @@ class _RegisPageState extends State<RegisPage> {
                         obscureText: !isPasswordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password is still empty';
+                            return 'Kata Sandi tidak boleh kosong';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: 'Password',
+                          hintText: 'Kata Sandi',
                           hintStyle: const TextStyle(color: Colors.blueGrey),
                           prefixIcon: const Icon(Icons.lock, color: Colors.blueGrey),
                           suffixIcon: GestureDetector(
@@ -285,15 +215,15 @@ class _RegisPageState extends State<RegisPage> {
                         obscureText: !isPasswordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Confirm Password is still empty';
+                            return 'Konfirmasi Kata Sandi tidak boleh kosong';
                           }
                           if (value != _ctrlPassword.text) {
-                            return 'Passwords do not match';
+                            return 'Mohon periksa Kata Sandi';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          hintText: 'Confirm Password',
+                          hintText: 'Konfirmasi Kata Sandi',
                           hintStyle: const TextStyle(color: Colors.blueGrey),
                           prefixIcon: const Icon(Icons.lock, color: Colors.blueGrey),
                           suffixIcon: GestureDetector(
@@ -328,7 +258,7 @@ class _RegisPageState extends State<RegisPage> {
                                   ),
                                 )
                               : const Text(
-                                  'Register',
+                                  'Daftar',
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize: 18,
@@ -349,7 +279,7 @@ class _RegisPageState extends State<RegisPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            'Already have an account? ',
+                            'Sudah Punya Akun? ',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -363,7 +293,7 @@ class _RegisPageState extends State<RegisPage> {
                               );
                             },
                             child: const Text(
-                              'Login',
+                              'Masuk',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.blue,

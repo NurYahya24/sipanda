@@ -23,6 +23,7 @@ class _InputDataPageState extends State<InputDataPage> {
   var _PBL = TextEditingController();
   var _LKL = TextEditingController();
   var _anak = TextEditingController();
+  DateTime? _tglUnformatted;
 
 
   void _handleGenderChange(String? value) {
@@ -93,7 +94,7 @@ void _handlePlaceChange(String? value) {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        addBayi(_selectedPlace.toString(),_nama.text, _alamat.text, _tgl.text, _selectedGender.toString(), double.parse(_BBL.text), double.parse(_PBL.text), double.parse(_LKL.text), double.parse(_anak.text), _ortu.text);
+                        addBayi(_selectedPlace.toString(),_nama.text, _alamat.text, _tglUnformatted!, _selectedGender.toString(), double.parse(_BBL.text), double.parse(_PBL.text), double.parse(_LKL.text), double.parse(_anak.text), _ortu.text);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -135,6 +136,7 @@ void _handlePlaceChange(String? value) {
           String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
           setState(() {
             _tgl.text = formattedDate;
+            _tglUnformatted = pickedDate;
           });
         }
       },
