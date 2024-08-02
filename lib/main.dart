@@ -2,12 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sipanda/firebase_options.dart';
-import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/home.dart';
 import 'package:sipanda/pages/login.dart';
-import 'package:sipanda/pages/read_data.dart';
-import 'package:sipanda/pages/regis.dart';
-
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -58,7 +54,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot){
           print(FirebaseAuth.instance.currentUser?.uid,);
           if(snapshot.hasData){
-            return const Read_Data_Page();
+            return const Home();
           }else{
             return const LoginPage();
           }

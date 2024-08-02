@@ -1,9 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:sipanda/pages/login.dart';
-import 'package:sipanda/pages/regis.dart';
-
 class Category {
   String thumbnail;
   String nama;

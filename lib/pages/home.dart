@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/contents/category.dart';
-import 'package:sipanda/pages/login.dart';
 import 'package:sipanda/pages/read_data.dart';
 
 class Home extends StatefulWidget {
@@ -16,13 +15,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: Column(
-          children: const [
+          children: [
             AppsBar(),
-            Expanded(child: Bodies(),)
+            Expanded(child: Bodies())
           ],
         ),
       ), 
@@ -30,46 +29,6 @@ class _HomeState extends State<Home> {
   }
 }
 
-class Bodies extends StatelessWidget {
-  const Bodies({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10 ,left: 20, right: 20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Menu Dashboard",
-              style: Theme.of(context).textTheme.bodyLarge,)
-            ],
-          ),),
-          Expanded(child: 
-          GridView.builder(
-            shrinkWrap: true,
-            itemCount: CategoryList.length,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 8
-            ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.8,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 24), 
-            itemBuilder: (context, index){
-              return CategoryCard(
-                category : CategoryList[index]
-              );
-            })
-          )
-          
-      ],
-    );
-  }
-}
 class AppsBar extends StatelessWidget {
   const AppsBar({super.key});
   @override
@@ -106,37 +65,79 @@ class AppsBar extends StatelessWidget {
                           indeks = i;
                         }
                       }if(snapshot.hasError) {
-                        return Text("Error Saat Membaca Data");
+                        return const Text("Error Saat Membaca Data");
                       }else{
                         return 
                         Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-                        Flexible(child: Text(
-                "Halo, "+ snapshot.data?.docs[indeks]["nama"],
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              )],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                snapshot.data?.docs[indeks]["level"],
-                style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
-              )
-            ],
-          ),
-        ],
-      );
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                          Flexible(child: Text(
+                                  "Halo, "+ snapshot.data?.docs[indeks]["nama"],
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                )],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data?.docs[indeks]["level"],
+                                  style: const TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
+                                )
+                              ],
+                            ),
+                          ],
+                        );
                       }
                   }
                 })
             
+    );
+  }
+}
+
+
+class Bodies extends StatelessWidget {
+  const Bodies({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 10 ,left: 20, right: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Menu Dashboard",
+              style: Theme.of(context).textTheme.bodyLarge,)
+            ],
+          ),),
+          Expanded(child: 
+          GridView.builder(
+            shrinkWrap: true,
+            itemCount: CategoryList.length,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 8
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 24), 
+            itemBuilder: (context, index){
+              return CategoryCard(
+                category : CategoryList[index]
+              );
+            })
+          )
+          
+      ],
     );
   }
 }

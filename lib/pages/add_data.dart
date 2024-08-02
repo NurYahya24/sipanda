@@ -41,6 +41,11 @@ void _handlePlaceChange(String? value) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.white,),
+        elevation: 0.0,),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

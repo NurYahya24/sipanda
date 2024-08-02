@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/list_data.dart';
 
 class Read_Data_Page extends StatefulWidget {
@@ -35,7 +36,6 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
               child: Text(
                 'User'
               ),
-              
               ),
               Padding
               (padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -47,7 +47,7 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
                       contentPadding: const EdgeInsets.all(0),
                       prefixIcon: const Icon(Icons.search_outlined),
                       hintText: 'Cari Nama Bayi',
-                      fillColor: Colors.white,
+                      fillColor: const Color.fromARGB(255, 154, 199, 236),
                       filled: true,
                       border: InputBorder.none,
                       enabledBorder: OutlineInputBorder(
@@ -174,12 +174,31 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
                         ],
                       ),
                     )
+                  ],
+                ),
+              ),
             ],
           ),
+        floatingActionButton: FloatingActionButton.extended(
+        tooltip: 'Tambah Data Bayi',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => InputDataPage()),
+          );
+        },
+        backgroundColor: const Color(0xFF4D80DF),
+        label: const Text(
+          'Tambah Data',
+            style: TextStyle(
+              fontSize: 16,
+              color: Color.fromARGB(255, 255, 255, 255),
+              fontWeight: FontWeight.w500,
+            ),
         ),
-        ],
-          ),
-        )
+        icon: Icon(Icons.add, color: Colors.white,size: 25,),
+      ),)
       )
     );
   }
