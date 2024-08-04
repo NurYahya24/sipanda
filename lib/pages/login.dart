@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sipanda/auth/auth.dart';
+import 'package:sipanda/pages/home.dart';
 import 'package:sipanda/pages/regis.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,7 +28,54 @@ class _LoginPageState extends State<LoginPage> {
     final email = _ctrlEmail.value.text;
     final password = _ctrlPassword.value.text;
     setState(() => _loading = true);
-    await Auth().login(email, password);
+    try {
+      await Auth().login(email, password);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+      setState(() => _loading = false);
+    } catch (e) {
+      print('Error saat login: $e');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Terdapat Error',
+            ),
+            content: '$e' == '[firebase_auth/invalid-login-credentials] Error'
+                ? const Text(
+                    "Kata Sandi atau E-mail anda salah",
+                  )
+                : '$e' ==
+                        '[firebase_auth/invalid-email] The email address is badly formatted.'
+                    ? const Text(
+                        "Silahkan Periksa Format E-mail Yang Anda Masukkan",
+                      )
+                    : Text(
+                        "$e",
+                      ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                  setState(() => _loading = false);
+                },
+                child: const Text(
+                  'OK',
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
     setState(() => _loading = false);
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/contents/category.dart';
+import 'package:sipanda/pages/profile_page.dart';
 import 'package:sipanda/pages/read_data.dart';
 
 class Home extends StatefulWidget {
@@ -48,54 +49,59 @@ class AppsBar extends StatelessWidget {
       end: FractionalOffset.bottomCenter,)
       ),
       child: 
-              StreamBuilder(
-                stream: whoAmI(), 
-                builder: (context, snapshot){
-                  switch (snapshot.connectionState){
-                    case ConnectionState.waiting:
-                      return Text(
-                        "Loading....",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      );
-                    default:
-                      int indeks = 0;
-                      int panjang = snapshot.data?.docs.length as int;
-                      for (int i =0; i<panjang; i++){
-                        if(snapshot.data!.docs[i].id == FirebaseAuth.instance.currentUser!.uid){
-                          indeks = i;
-                        }
-                      }if(snapshot.hasError) {
-                        return const Text("Error Saat Membaca Data");
-                      }else{
-                        return 
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                          Flexible(child: Text(
-                                  "Halo, "+ snapshot.data?.docs[indeks]["nama"],
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                                )],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data?.docs[indeks]["level"],
-                                  style: const TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
-                                )
-                              ],
-                            ),
-                          ],
-                        );
-                      }
+        StreamBuilder(
+          stream: whoAmI(), 
+          builder: (context, snapshot){
+            switch (snapshot.connectionState){
+              case ConnectionState.waiting:
+                return Text(
+                  "Loading....",
+                  style: Theme.of(context).textTheme.titleLarge,
+                );
+              default:
+                int indeks = 0;
+                int panjang = snapshot.data?.docs.length as int;
+                for (int i =0; i<panjang; i++){
+                  if(snapshot.data!.docs[i].id == FirebaseAuth.instance.currentUser!.uid){
+                    indeks = i;
                   }
-                })
-            
+                }if(snapshot.hasError) {
+                  return const Text("Error Saat Membaca Data");
+                }else{
+                  return 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(child: Text(
+                                "Halo,  ${snapshot.data?.docs[indeks]['nama']}",
+                                style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ),
+                              Text(
+                                snapshot.data?.docs[indeks]["level"],
+                                style: const TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
+                              )
+                            ],
+                          ),
+                          CircleAvatar(
+                            radius: 42,
+                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundImage: Image.asset("images/avatar${snapshot.data!.docs[indeks]['avatar']}.png").image,
+                            ),
+                          ), 
+                        ],
+                      );
+                }
+            }
+          }
+        )            
     );
   }
 }

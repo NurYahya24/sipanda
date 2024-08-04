@@ -23,7 +23,7 @@ class _List_Data_PageState extends State<List_Data_Page> {
             return Center(child: CircularProgressIndicator());
           default:
             if(snapshot.hasError){
-              return Text(
+              return const Text(
                 'Error saat membaca data'
               );
             }else {
@@ -69,7 +69,7 @@ class _List_Data_PageState extends State<List_Data_Page> {
                             padding: const EdgeInsets.only(left: 12),
                             width: MediaQuery.of(context).size.width * 0.2,
                             child: CircleAvatar(
-                              backgroundColor: Colors.white,
+                              backgroundColor: Color.fromARGB(255, 216, 174, 255),
                               radius: 50,
                               child: ClipOval(
                                 child: snapshot.data!.docs[index]['jenkel'] == 'Laki-laki' ? Image.asset('images/anakM.png',) : Image.asset('images/anakF.png'),

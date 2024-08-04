@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Stream<QuerySnapshot> whoAmI() {
     return FirebaseFirestore.instance.collection('user').snapshots();
@@ -24,30 +25,31 @@ void addBayi(String posyandu, String nama, String alamat, DateTime tgl, String j
 
 void loopDataGizi(String uid){
   FirebaseFirestore db = FirebaseFirestore.instance;
-  for(int i = 0; i < 60 ; i++){
+  for(int i = 0; i < 61 ; i++){
     final data = {
       "periksa" : false,
-      "bulan" : i + 1,
+      "bulan" : i,
       "BB" : 0,
       "TB" : 0,
       "LK" : 0,
-      "tgl-periksa" : 0,
+      "tgl-periksa" : Timestamp.now(),
     };
     db.collection("bayi").doc(uid).collection("data-gizi").add(data).then((DocumentSnapshot) => print("Berhasil Coy"));
   }
   
 }
 
-void addUser(String nama, posyandu, level){
-  FirebaseFirestore db = FirebaseFirestore.instance;
-  final data = {
-    "nama" : nama,
-    "posyandu" : posyandu,
-    "level" : level
-  };
+// void addUser(String nama, posyandu, level){
+//   FirebaseFirestore db = FirebaseFirestore.instance;
+//   final data = {
+//     "nama" : nama,
+//     "posyandu" : posyandu,
+//     "level" : level,
+//     "avatar" : 0
+//   };
 
-  db.collection("user").add(data).then((DocumentSnapshot) => print("Berhasil Coy"));
-}
+//   db.collection("user").add(data).then((DocumentSnapshot) => print("Berhasil Coy"));
+// }
 
 Stream<QuerySnapshot> readData(String filter, String searchKey) {
   searchKey = searchKey.toUpperCase();
@@ -84,6 +86,52 @@ Stream<QuerySnapshot> fetchDataGizi(String uid){
   .snapshots();
 }
 
+void CheckUp(DateTime tanggal, double BB, double PB, double LK, String uid, String idCheckup){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final data = {
+    'tgl-periksa' : tanggal,
+    'BB' : BB,
+    'TB' : PB,
+    'LK' : LK,
+    'periksa' : true
+  };
+  db.collection("bayi")
+    .doc(uid)
+    .collection("data-gizi")
+    .doc(idCheckup)
+    .update(data)
+    .then((DocumentSnapshot) => print("Berhasil Coy Update"));
+}
+
+delCheckUp(String uid, String idCheckUp){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final data = {
+    'tgl-periksa' : Timestamp.now(),
+    'BB' : 0,
+    'TB' : 0,
+    'LK' : 0,
+    'periksa' : false
+  };
+  db.collection("bayi")
+    .doc(uid)
+    .collection("data-gizi")
+    .doc(idCheckUp)
+    .update(data)
+    .then((DocumentSnapshot) => print("Berhasil Coy Delete"));
+}
+
+void editProfile(String nama, int avatar, String posyandu){
+  var uid = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final data = {
+    "avatar" : avatar,
+    "nama" : nama,
+    "posyandu" : posyandu,
+  };
+  db.collection("user")
+    .doc(uid)
+    .update(data);
+}
 
 
 

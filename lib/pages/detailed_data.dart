@@ -22,11 +22,13 @@ class _detailed_data_pageState extends State<detailed_data_page> {
         appBar: AppBar(
           backgroundColor: const Color(0xFF4D80DF),
           iconTheme: const IconThemeData(color: Colors.white,),
-          elevation: 0.0,),
+          elevation: 0.0,
+          ),
         body: Column(
           children: [
             Header(),
             Expanded(child: Content(uid: widget.uid)),
+            const SizedBox(height: 40,)
           ],
         ),
       ),);
@@ -116,9 +118,12 @@ class _ContentState extends State<Content> {
               IconButton(onPressed: (){
                 _linkedList(false);
               }, icon: const Icon(Icons.navigate_before_rounded)),
-              Text(
+              Flexible(
+                child: Text(
                 _title.elementAt(_index),
                 style: Theme.of(context).textTheme.bodyLarge,
+                textAlign: TextAlign.center,
+                )
               ),
               IconButton(onPressed: (){
                 _linkedList(true);
@@ -192,6 +197,7 @@ class _informasiState extends State<informasi> {
                   listProfile(Icons.family_restroom, 'Nama Ibu/Bapak', data['ortu'], context),
                   listProfile(Icons.location_pin, 'Alamat', data['alamat'], context),
                   listProfile(data['jenkel'] == 'Laki-laki'? Icons.male : Icons.female, 'Jenis Kelamin', data['jenkel'], context),
+                  listProfile(Icons.format_list_numbered, 'Anak Ke-', data['anak'].toString(), context),
                   listProfile(Icons.monitor_weight_outlined, 'BB Lahir', '${data['bbl']} Kg', context),
                   listProfile(Icons.straighten, 'PB Lahir', '${data['pbl']} Cm', context),
                   listProfile(Icons.face, 'LK Lahir', "${data['lkl']} Cm", context),

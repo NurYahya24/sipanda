@@ -92,7 +92,7 @@ void _handlePlaceChange(String? value) {
                   const SizedBox(height: 20),
                   _textField('Alamat', Icons.home, false, false, _alamat),
                   const SizedBox(height: 20),
-                  _spaceBetweenField('BB Lahir (kg)', 'PB Lahir (cm)', Icons.monitor_weight, Icons.height, _BBL, _PBL),
+                  _spaceBetweenField('BB Lahir (kg)', 'PB Lahir (cm)', Icons.monitor_weight, Icons.straighten, _BBL, _PBL),
                   const SizedBox(height: 20),
                   _spaceBetweenField('LK Lahir (cm)', 'Anak Ke-', Icons.child_care, Icons.format_list_numbered, _LKL, _anak),
                   const SizedBox(height: 30),
@@ -129,9 +129,15 @@ void _handlePlaceChange(String? value) {
   }
 
   Widget _dateTime(){
-    return TextField(
+    return TextFormField(
       controller: _tgl,
       readOnly: true,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Tanggal Harus Diisi';
+        }
+        return null;
+      },
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
           context: context, 
@@ -200,11 +206,11 @@ void _handlePlaceChange(String? value) {
             Row(
               children: [
                 Icon(icons, color: Colors.blueGrey),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     judul,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.blueGrey,
                       fontSize: 16,
                     ),

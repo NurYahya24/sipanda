@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sipanda/firebase_options.dart';
 import 'package:sipanda/pages/home.dart';
 import 'package:sipanda/pages/login.dart';
+import 'package:sipanda/pages/regis.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -58,8 +59,9 @@ class MyApp extends StatelessWidget {
           }else{
             return const LoginPage();
           }
-        },),
-        debugShowCheckedModeBanner: false,
+        },
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

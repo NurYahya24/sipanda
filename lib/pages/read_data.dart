@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/list_data.dart';
@@ -27,21 +29,24 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Data Bayi", style: Theme.of(context).textTheme.titleLarge, ),
+            backgroundColor: const Color(0xFF4D80DF),
+            iconTheme: const IconThemeData(color: Colors.white,),
+            elevation: 0.0,
+          ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 40),
-              const Padding
-              (padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text(
-                'User'
-              ),
-              ),
+              const SizedBox(height: 20,),
               Padding
               (padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SizedBox(
                 height: 45,
                 child: TextField(
+                  onTapOutside: (event){
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
                   controller: searchController,
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(0),
@@ -63,7 +68,7 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
                 ),
               ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20),
               Expanded(
                 child: Column(
                   children: [

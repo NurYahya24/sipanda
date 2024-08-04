@@ -16,7 +16,7 @@ class Auth {
     db
       .collection("user")
       .doc(uid)
-      .set({"nama" : nama, "posyandu" : posyandu, "level" : level});
+      .set({"nama" : nama, "posyandu" : posyandu, "level" : level, "avatar" : 0});
   }
   Future<void> login(String email, String password) async {
     final user = await _auth.signInWithEmailAndPassword(
