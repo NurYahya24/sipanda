@@ -222,7 +222,7 @@ class _Profile_PageState extends State<Profile_Page> {
               elevation: 4,
               shadowColor: Colors.black12,
               child: ListTile(
-                leading: const Icon(Icons.delete_forever),
+                leading: const Icon(Icons.delete_forever_outlined),
                 title: Text('Hapus Akun', style: Theme.of(context).textTheme.bodyMedium,),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: (){
@@ -238,7 +238,7 @@ class _Profile_PageState extends State<Profile_Page> {
   Widget _textField(String hintText, IconData icon, bool isPassword, bool isDigit, TextEditingController lController) {
     return TextFormField(
       controller: lController,
-      keyboardType: isDigit? TextInputType.numberWithOptions(decimal:true) : TextInputType.text,
+      keyboardType: isDigit? const TextInputType.numberWithOptions(decimal:true) : TextInputType.text,
       inputFormatters: isDigit ? [FilteringTextInputFormatter.allow(RegExp(r'^[0-9]+.?[0-9]*'))] : null,
       validator: (value) {
         if (value == null || value.isEmpty) {

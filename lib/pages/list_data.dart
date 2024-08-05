@@ -140,7 +140,7 @@ class _List_Data_PageState extends State<List_Data_Page> {
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
-                            builder: (context) => detailed_data_page(uid: snapshot.data!.docs[index].id)
+                            builder: (context) => detailed_data_page(uid: snapshot.data!.docs[index].id, nama: snapshot.data!.docs[index]['nama'],)
                           )
                         );
                       },

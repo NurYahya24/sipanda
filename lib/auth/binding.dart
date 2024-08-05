@@ -77,13 +77,23 @@ Stream<DocumentSnapshot> fetchInfo(String uid){
     .snapshots();
 }
 
-Stream<QuerySnapshot> fetchDataGizi(String uid){
+Stream<QuerySnapshot> fetchDataGizi(String uid, bool header){
   FirebaseFirestore db = FirebaseFirestore.instance;
-  return db.collection("bayi")
-  .doc(uid)
-  .collection("data-gizi")
-  .orderBy('bulan', descending: false)
-  .snapshots();
+  if(header){
+    return db.collection("bayi")
+    .doc(uid)
+    .collection("data-gizi")
+    .where('periksa', isEqualTo: true)
+    .orderBy('bulan', descending: true)
+    .snapshots();
+  }else{
+    return db.collection("bayi")
+    .doc(uid)
+    .collection("data-gizi")
+    .orderBy('bulan', descending: false)
+    .snapshots();
+  }
+  
 }
 
 void CheckUp(DateTime tanggal, double BB, double PB, double LK, String uid, String idCheckup){

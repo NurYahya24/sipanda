@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sipanda/auth/binding.dart';
+import 'package:sipanda/pages/KMS.dart';
 import 'package:sipanda/pages/table_gizi.dart';
 
 class detailed_data_page extends StatefulWidget {
   final String uid;
-  const detailed_data_page({super.key, required this.uid});
+  final String nama;
+  const detailed_data_page({super.key, required this.uid, required this.nama});
 
   @override
   State<detailed_data_page> createState() => _detailed_data_pageState();
@@ -20,13 +22,14 @@ class _detailed_data_pageState extends State<detailed_data_page> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         appBar: AppBar(
+          title: Text(widget.nama, style: Theme.of(context).textTheme.titleLarge,),
           backgroundColor: const Color(0xFF4D80DF),
           iconTheme: const IconThemeData(color: Colors.white,),
           elevation: 0.0,
           ),
         body: Column(
           children: [
-            Header(),
+            Header(uid: widget.uid,),
             Expanded(child: Content(uid: widget.uid)),
             const SizedBox(height: 40,)
           ],
@@ -36,12 +39,13 @@ class _detailed_data_pageState extends State<detailed_data_page> {
 }
 
 class Header extends StatelessWidget {
-  const Header({super.key});
+  final String uid;
+  const Header({super.key, required this.uid});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
       height: 200,
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -54,6 +58,238 @@ class Header extends StatelessWidget {
         begin: Alignment.center,
         end: FractionalOffset.bottomCenter)
       ),
+      child:
+      StreamBuilder(
+        stream: fetchDataGizi(uid, true),
+        builder: (context, snapshot){
+          switch (snapshot.connectionState){
+            case ConnectionState.waiting :
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            default :
+              if(snapshot.hasError){
+                return const Center(child: Text('Error saat membaca data..'),);
+              }else{
+                var data = snapshot.data!.docs;
+                var berat = 'N/A';
+                var tinggi = 'N/A';
+                var kepala = 'N/A';
+                final Timestamp timestamp; 
+                final DateTime dateTime;
+                var formatTanggal = 'Belum ada pemeriksaan';
+                if(snapshot.data!.docs.length != 0){
+                  berat = data[0]['BB'].toString();
+                  tinggi = data[0]['TB'].toString();
+                  kepala = data[0]['LK'].toString();
+                  timestamp = data[0]['tgl-periksa'] as Timestamp;
+                  dateTime = timestamp.toDate();
+                  formatTanggal = "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+                }
+                return Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Terakhir di update',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        const Spacer(),
+                        Text(
+                          formatTanggal,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        const SizedBox(width: 5),
+                        const Icon(Icons.calendar_today, size: 18, color: Colors.white)
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+                            height: 130,
+                            width: 100,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              color: Colors.white
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 0, left: 0, right: 45),
+                                  height: 45,
+                                  width: 100,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15),
+                                      bottomRight: Radius.circular(25)),
+                                    color: Color.fromARGB(255, 211, 211, 211)
+                                  ),
+                                  child: const Icon(Icons.monitor_weight_outlined, color: Colors.grey, size: 30,),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10, top: 20, right: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Berat', 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500, 
+                                          fontSize: 14, 
+                                          fontFamily: 'Poppins'),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child : Text(
+                                            berat,
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis)
+                                          ),
+                                          const Text(
+                                            'Kg',)
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+                            height: 130,
+                            width: 100,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              color: Colors.white
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 0, left: 0, right: 45),
+                                  height: 45,
+                                  width: 100,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15),
+                                      bottomRight: Radius.circular(25)),
+                                    color: Color.fromARGB(255, 211, 211, 211)
+                                  ),
+                                  child: const Icon(Icons.straighten, color: Colors.grey, size: 30,),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10, top: 20, right: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Tinggi', 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500, 
+                                          fontSize: 14, 
+                                          fontFamily: 'Poppins'),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child : Text(
+                                            tinggi,
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis)
+                                          ),
+                                          const Text(
+                                            'Cm',)
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+                            height: 130,
+                            width: 100,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              color: Colors.white
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 0, left: 0, right: 45),
+                                  height: 45,
+                                  width: 100,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15),
+                                      bottomRight: Radius.circular(25)),
+                                    color: Color.fromARGB(255, 211, 211, 211)
+                                  ),
+                                  child: const Icon(Icons.child_care, color: Colors.grey, size: 30,),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10, top: 20, right: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'L. Kepala', 
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500, 
+                                          fontSize: 14, 
+                                          fontFamily: 'Poppins'),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child : Text(
+                                            kepala,
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            overflow: TextOverflow.ellipsis)
+                                          ),
+                                          const Text(
+                                            'Cm',)
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              }
+          }
+        },
+      ) 
     );
   }
 }
@@ -97,7 +333,7 @@ class _ContentState extends State<Content> {
     _pages = [
       informasi(uid: widget.uid),
       Table_Gizi(uid: widget.uid),
-      informasi(uid: widget.uid),
+      KMS(),
     ];
   }
 
@@ -182,7 +418,7 @@ class _informasiState extends State<informasi> {
       builder: (context, snapshot){
         switch(snapshot.connectionState){
           case ConnectionState.waiting:
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           default :
             if(snapshot.hasError){
               return const Text("Error saat membaca data...");

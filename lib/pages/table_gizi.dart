@@ -86,7 +86,7 @@ class _Table_GiziState extends State<Table_Gizi> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: fetchDataGizi(widget.uid), 
+      stream: fetchDataGizi(widget.uid, false), 
       builder: (context, snapshot){
         switch (snapshot.connectionState){
           case ConnectionState.waiting :
@@ -242,8 +242,8 @@ class _Table_GiziState extends State<Table_Gizi> {
   Widget _textField(String hintText, IconData icon, bool isPassword, bool isDigit, TextEditingController lController) {
     return TextFormField(
       controller: lController,
-      keyboardType: isDigit? TextInputType.numberWithOptions(decimal:true) : TextInputType.text,
-      inputFormatters: isDigit ? [FilteringTextInputFormatter.allow(RegExp(r'^[0-9]+.?[0-9]*'))] : null,
+      keyboardType: isDigit ? const TextInputType.numberWithOptions(decimal:true) : TextInputType.text,
+      inputFormatters: isDigit ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))] : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$hintText Harus Diisi';

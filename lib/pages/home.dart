@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/contents/category.dart';
-import 'package:sipanda/pages/profile_page.dart';
-import 'package:sipanda/pages/read_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -159,7 +157,7 @@ class CategoryCard extends StatelessWidget {
          Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context) => Read_Data_Page()));
+            builder: (context) => category.destinationPage));
       },
       child: Container(
         padding: const EdgeInsets.all(10),

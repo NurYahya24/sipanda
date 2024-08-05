@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sipanda/firebase_options.dart';
 import 'package:sipanda/pages/home.dart';
 import 'package:sipanda/pages/login.dart';
-import 'package:sipanda/pages/regis.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -47,6 +46,11 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.normal,
             fontSize: 16,
             color: Colors.blueGrey
+          ),
+          labelLarge: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 13,
+            color: Color.fromARGB(255, 255, 255, 255)
           )
         ),
       ),
