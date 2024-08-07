@@ -202,7 +202,7 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
               fontWeight: FontWeight.w500,
             ),
         ),
-        icon: Icon(Icons.add, color: Colors.white,size: 25,),
+        icon: const Icon(Icons.add, color: Colors.white,size: 25),
       ),)
       )
     );

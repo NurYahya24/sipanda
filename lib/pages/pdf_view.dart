@@ -77,7 +77,7 @@ class _PdfViewerState extends State<PdfViewer> {
       ),
       body: 
       StreamBuilder(
-        stream: fetchDataGizi(widget.uid, false), 
+        stream: fetchDataGizi(widget.uid, true), 
         builder: (context, snapshot){
           switch (snapshot.connectionState){
             case ConnectionState.waiting :

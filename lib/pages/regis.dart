@@ -69,7 +69,7 @@ class _RegisPageState extends State<RegisPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'images/login.png',
+                        'images/logo.png',
                         height: 200,
                       ),
                       const Text(

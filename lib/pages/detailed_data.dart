@@ -45,8 +45,9 @@ class _detailed_data_pageState extends State<detailed_data_page> {
             )
           );
         },
-        tooltip: 'Print Message',
-        child: const Icon(Icons.print),
+        backgroundColor: const Color(0xFF4D80DF),
+        tooltip: 'Print',
+        child : const Icon(Icons.print, color: Colors.white,),
         ),
       ),
     );
