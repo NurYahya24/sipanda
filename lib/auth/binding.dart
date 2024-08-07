@@ -34,22 +34,36 @@ void loopDataGizi(String uid){
       "LK" : 0,
       "tgl-periksa" : Timestamp.now(),
     };
-    db.collection("bayi").doc(uid).collection("data-gizi").add(data).then((DocumentSnapshot) => print("Berhasil Coy"));
+    db.collection("bayi").doc(uid).collection("data-gizi").add(data);
   }
   
 }
 
-// void addUser(String nama, posyandu, level){
-//   FirebaseFirestore db = FirebaseFirestore.instance;
-//   final data = {
-//     "nama" : nama,
-//     "posyandu" : posyandu,
-//     "level" : level,
-//     "avatar" : 0
-//   };
+void switchUser(String uid, bool aktif, bool admin){
+  String level = aktif ? "Kader" : "Nonaktif";
+  level = admin? "Admin" : level;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  var data = {
+    "level" : level
+  };
+  db.collection("user")
+    .doc(uid)
+    .update(data);
+}
 
-//   db.collection("user").add(data).then((DocumentSnapshot) => print("Berhasil Coy"));
-// }
+Stream<QuerySnapshot> readUser(String filter){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  if(filter == 'Semua'){
+    return db.collection('user')
+            .orderBy('nama', descending: false)
+            .snapshots();
+  }else{
+    return db.collection('user')
+            .where('level', isEqualTo: filter)
+            .orderBy('nama', descending: false)
+            .snapshots();
+  }
+}
 
 Stream<QuerySnapshot> readData(String filter, String searchKey) {
   searchKey = searchKey.toUpperCase();
@@ -84,7 +98,7 @@ Stream<QuerySnapshot> fetchDataGizi(String uid, bool header){
     .doc(uid)
     .collection("data-gizi")
     .where('periksa', isEqualTo: true)
-    .orderBy('bulan', descending: true)
+    .orderBy('bulan', descending: false)
     .snapshots();
   }else{
     return db.collection("bayi")
@@ -109,8 +123,7 @@ void CheckUp(DateTime tanggal, double BB, double PB, double LK, String uid, Stri
     .doc(uid)
     .collection("data-gizi")
     .doc(idCheckup)
-    .update(data)
-    .then((DocumentSnapshot) => print("Berhasil Coy Update"));
+    .update(data);
 }
 
 delCheckUp(String uid, String idCheckUp){
@@ -126,8 +139,7 @@ delCheckUp(String uid, String idCheckUp){
     .doc(uid)
     .collection("data-gizi")
     .doc(idCheckUp)
-    .update(data)
-    .then((DocumentSnapshot) => print("Berhasil Coy Delete"));
+    .update(data);
 }
 
 void editProfile(String nama, int avatar, String posyandu){
@@ -143,5 +155,39 @@ void editProfile(String nama, int avatar, String posyandu){
     .update(data);
 }
 
+class DataPoint {
+  final double bulan;
+  final double bb;
+
+  DataPoint({required this.bulan, required this.bb});
+
+ factory DataPoint.fromMap(Map<String, dynamic> map) {
+    return DataPoint(
+      bulan :(map['bulan'] as num).toDouble(),
+      bb : (map['BB'] as num).toDouble(),
+    );
+  }
+}
+
+Stream<List<DataPoint>> fetchDataKurva(String uid, bool isMale) {
+  return FirebaseFirestore.instance
+      .collection('bayi')
+      .doc(uid)
+      .collection('data-gizi')
+      .where('periksa', isEqualTo: true)
+      .orderBy('bulan', descending: false)
+      .snapshots()
+      .map((querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      return DataPoint.fromMap(doc.data());
+    }).toList();
+  });
+}
+
+String getDate(Timestamp tgl){
+    final DateTime dateTime = tgl.toDate();
+    var formatTanggal ="${dateTime.day}-${dateTime.month}-${dateTime.year}";
+    return formatTanggal;
+  }
 
 

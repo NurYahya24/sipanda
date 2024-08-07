@@ -899,3 +899,174 @@ class BBFemale{
   ];
 }
 
+List <double> _kbmMale = [
+  0,
+  0.8,
+  0.9,
+  0.8,
+  0.6,
+  0.5,
+  0.4,
+  0.4,
+  0.3,
+  0.3,
+  0.3,
+  0.3,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+];
+List <double> _kbmFemale = [
+  0,
+  0.8,
+  0.9,
+  0.8,
+  0.6,
+  0.5,
+  0.4,
+  0.3,
+  0.3,
+  0.3,
+  0.3,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+  0.2,
+];
+String generateKeterangan(double bb, double bbPrev, int bulan, bool male, bool prevNull){
+  String A = "";
+  String B = "";
+  //logics of B
+  if(male){
+    if(bb < BBMale.BBmaleMin3SD[bulan].score){
+      B = '△';
+    }else if(bb >= BBMale.BBmaleMin3SD[bulan].score && bb < BBMale.BBmaleMin2SD[bulan].score){
+      B = 'K';
+    }else{
+      B = 'B';
+    }
+  }else{
+    if(bb < BBFemale.BBFemaleMin3SD[bulan].score){
+      B = '△';
+    }else if(bb >= BBFemale.BBFemaleMin3SD[bulan].score && bb < BBFemale.BBFemaleMin2SD[bulan].score){
+      B = 'K';
+    }else{
+      B = 'B';
+    }
+  }
+  //logics of A
+  if(male){
+    if(prevNull){
+      A = 'O';
+    }else{
+      if((bb - bbPrev) >= _kbmMale[bulan]){
+        A = 'N';
+      }else{
+        A = 'T';
+      }
+    }
+  }else{
+    if(prevNull){
+      A = 'O';
+    }else{
+      if((bb - bbPrev) >= _kbmFemale[bulan]){
+        A = 'N';
+      }else{
+        A = 'T';
+      }
+    }
+  }
+  return '$A/$B';
+}

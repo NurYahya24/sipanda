@@ -41,18 +41,18 @@ class _List_Data_PageState extends State<List_Data_Page> {
                               maxWidth: 200,
                               maxHeight: 200,
                             ),
-                            child: Icon(Icons.error_outline, size: 45,),
+                            child: const Icon(Icons.warning_rounded, size: 45),
                           ),
-                          title: Text(
-                            'Belum ada data'
+                          title: const Text(
+                            'Belum Ada Data',
                           ),
-                          subtitle: Text(
-                            'Silahkan input data'
-                            ),
+                          subtitle: const Text(
+                            'Silahkan input data bayi'
+                          ),
                         )
                       ],
                     ),
-                  ),
+                  )
                 );
               }else{
                 return ListView.builder(
@@ -140,7 +140,7 @@ class _List_Data_PageState extends State<List_Data_Page> {
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
-                            builder: (context) => detailed_data_page(uid: snapshot.data!.docs[index].id, nama: snapshot.data!.docs[index]['nama'],)
+                            builder: (context) => detailed_data_page(uid: snapshot.data!.docs[index].id, nama: snapshot.data!.docs[index]['nama'], gender : snapshot.data!.docs[index]['jenkel'])
                           )
                         );
                       },

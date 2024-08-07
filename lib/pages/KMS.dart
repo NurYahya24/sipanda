@@ -1,6 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/contents/BBlist.dart';
+
+
 
 List _listMin3SDMale = BBMale.BBmaleMin3SD;
 List _listMin2SDMale = BBMale.BBmaleMin2SD;
@@ -19,31 +22,49 @@ List _listPlus3SDFemale = BBFemale.BBFemalePlus3SD;
 
 class _LineChart extends StatelessWidget {
   final bool male;
-  const _LineChart({required this.male});
+  final String uid;
+  const _LineChart({required this.male, required this.uid});
   
 
   @override
   Widget build(BuildContext context) {
-    return LineChart(
-      male ? sampleData1 : sampleData2,
+    return StreamBuilder<List<DataPoint>>(
+      stream: fetchDataKurva(uid, true), 
+      builder: (context, snapshot){
+        switch(snapshot.connectionState){
+          case ConnectionState.waiting :
+            return const Center(child: CircularProgressIndicator());
+          default :
+            if(snapshot.hasError){
+              return const Text('Error saat membaca data');
+            }
+            else{
+              var dataPoints = snapshot.data!;
+              return LineChart(
+                male ? sampleData1(dataPoints) : sampleData2(dataPoints),
+              );
+            }  
+        }
+      }
     );
   }
 
-  LineChartData get sampleData1 => LineChartData(
+  LineChartData sampleData1(List<DataPoint> data) => LineChartData(
         gridData: gridData,
         titlesData: titlesData1,
         borderData: borderData,
-        lineBarsData: lineBarsData1,
+        lineBarsData: lineBarsData1(data),
         minX: 0,
         maxX: 60,
         maxY: 30,
         minY: 0,
       );
-  LineChartData get sampleData2 => LineChartData(
+
+  LineChartData sampleData2(List<DataPoint> data) => LineChartData(
         gridData: gridData,
         titlesData: titlesData1,
         borderData: borderData,
-        lineBarsData: lineBarsData2,
+        lineBarsData: lineBarsData2(data),
         minX: 0,
         maxX: 60,
         maxY: 30,
@@ -65,7 +86,7 @@ class _LineChart extends StatelessWidget {
         ),
       );
 
-  List<LineChartBarData> get lineBarsData1 => [
+  List<LineChartBarData> lineBarsData1(List<DataPoint> data) => [
         lineChartBarData1_1,
         lineChartBarData1_2,
         lineChartBarData1_3,
@@ -73,10 +94,10 @@ class _LineChart extends StatelessWidget {
         lineChartBarData1_5,
         lineChartBarData1_6,
         lineChartBarData1_7,
-        //lineChartBarFromDB,
+        lineChartBarFromDB(data),
 
       ];
-  List<LineChartBarData> get lineBarsData2 => [
+  List<LineChartBarData> lineBarsData2(List<DataPoint> data) => [
         lineChartBarData2_1,
         lineChartBarData2_2,
         lineChartBarData2_3,
@@ -84,7 +105,7 @@ class _LineChart extends StatelessWidget {
         lineChartBarData2_5,
         lineChartBarData2_6,
         lineChartBarData2_7,
-        //lineChartBarFromDB,
+        lineChartBarFromDB(data),
 
       ];
 
@@ -176,6 +197,8 @@ class _LineChart extends StatelessWidget {
 
   LineChartBarData get lineChartBarData1_1 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 192, 0, 0),
         barWidth: 2,
@@ -190,6 +213,8 @@ class _LineChart extends StatelessWidget {
 
   LineChartBarData get lineChartBarData1_2 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 0, 0),
         barWidth: 2,
@@ -204,6 +229,8 @@ class _LineChart extends StatelessWidget {
 
   LineChartBarData get lineChartBarData1_3 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 255, 0),
         barWidth: 2,
@@ -218,6 +245,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData1_4 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 146, 208, 80),
         barWidth: 2,
@@ -231,6 +260,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData1_5 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 255, 0),
         barWidth: 2,
@@ -244,6 +275,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData1_6 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 0, 0),
         barWidth: 2,
@@ -257,6 +290,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData1_7 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 192, 0, 0),
         barWidth: 2,
@@ -270,6 +305,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData2_1 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 192, 0, 0),
         barWidth: 2,
@@ -284,6 +321,8 @@ class _LineChart extends StatelessWidget {
 
   LineChartBarData get lineChartBarData2_2 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 0, 0),
         barWidth: 2,
@@ -298,6 +337,8 @@ class _LineChart extends StatelessWidget {
 
   LineChartBarData get lineChartBarData2_3 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 255, 0),
         barWidth: 2,
@@ -312,6 +353,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData2_4 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 146, 208, 80),
         barWidth: 2,
@@ -325,6 +368,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData2_5 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 255, 0),
         barWidth: 2,
@@ -338,6 +383,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData2_6 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 255, 0, 0),
         barWidth: 2,
@@ -351,6 +398,8 @@ class _LineChart extends StatelessWidget {
       );
   LineChartBarData get lineChartBarData2_7 => LineChartBarData(
         isCurved: true,
+        preventCurveOverShooting : true,
+        preventCurveOvershootingThreshold: 0,
         curveSmoothness: 0.0,
         color: const Color.fromARGB(255, 192, 0, 0),
         barWidth: 2,
@@ -362,10 +411,25 @@ class _LineChart extends StatelessWidget {
           FlSpot(_listPlus3SDFemale[i].bulan, _listPlus3SDFemale[i].score),
         ],
       );
+
+  LineChartBarData lineChartBarFromDB(List<DataPoint> data) => LineChartBarData(
+        isCurved: false,
+        curveSmoothness: 0.0,
+        color: const Color.fromARGB(255, 108, 105, 155),
+        barWidth: 2,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: data
+            .map((point) => FlSpot(point.bulan, point.bb))
+            .toList(),
+      );
 }
 
 class KMS extends StatefulWidget {
-  const KMS({super.key});
+  final String uid;
+  final bool male;
+  const KMS({super.key, required this.uid, required this.male});
 
   @override
   State<StatefulWidget> createState() => KMSState();
@@ -405,7 +469,7 @@ class KMSState extends State<KMS> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 6, left: 6),
-                  child: _LineChart(male: false),
+                  child: _LineChart(uid: widget.uid, male: widget.male),
                 ),
               ),
               const SizedBox(

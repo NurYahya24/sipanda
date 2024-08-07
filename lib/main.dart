@@ -57,7 +57,6 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
-          print(FirebaseAuth.instance.currentUser?.uid,);
           if(snapshot.hasData){
             return const Home();
           }else{

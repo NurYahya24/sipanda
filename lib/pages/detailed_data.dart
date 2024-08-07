@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/pages/KMS.dart';
+import 'package:sipanda/pages/pdf_view.dart';
 import 'package:sipanda/pages/table_gizi.dart';
 
 class detailed_data_page extends StatefulWidget {
   final String uid;
   final String nama;
-  const detailed_data_page({super.key, required this.uid, required this.nama});
+  final String gender;
+  const detailed_data_page({super.key, required this.uid, required this.nama, required this.gender});
 
   @override
   State<detailed_data_page> createState() => _detailed_data_pageState();
@@ -30,11 +32,24 @@ class _detailed_data_pageState extends State<detailed_data_page> {
         body: Column(
           children: [
             Header(uid: widget.uid,),
-            Expanded(child: Content(uid: widget.uid)),
+            Expanded(child: Content(uid: widget.uid, gender: widget.gender,)),
             const SizedBox(height: 40,)
           ],
         ),
-      ),);
+        floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context, 
+            MaterialPageRoute(
+              builder: (context) => PdfViewer(uid : widget.uid, gender: widget.gender)
+            )
+          );
+        },
+        tooltip: 'Print Message',
+        child: const Icon(Icons.print),
+        ),
+      ),
+    );
   }
 }
 
@@ -78,11 +93,11 @@ class Header extends StatelessWidget {
                 final Timestamp timestamp; 
                 final DateTime dateTime;
                 var formatTanggal = 'Belum ada pemeriksaan';
-                if(snapshot.data!.docs.length != 0){
-                  berat = data[0]['BB'].toString();
-                  tinggi = data[0]['TB'].toString();
-                  kepala = data[0]['LK'].toString();
-                  timestamp = data[0]['tgl-periksa'] as Timestamp;
+                if(data.length != 0){
+                  berat = data[data.length - 1]['BB'].toString();
+                  tinggi = data[data.length - 1]['TB'].toString();
+                  kepala = data[data.length - 1]['LK'].toString();
+                  timestamp = data[data.length - 1]['tgl-periksa'] as Timestamp;
                   dateTime = timestamp.toDate();
                   formatTanggal = "${dateTime.day}-${dateTime.month}-${dateTime.year}";
                 }
@@ -296,7 +311,8 @@ class Header extends StatelessWidget {
 
 class Content extends StatefulWidget {
   final String uid;
-  const Content({super.key, required this.uid});
+  final String gender;
+  const Content({super.key, required this.uid, required this.gender});
 
   @override
   State<Content> createState() => _ContentState();
@@ -332,8 +348,8 @@ class _ContentState extends State<Content> {
      super.initState();
     _pages = [
       informasi(uid: widget.uid),
-      Table_Gizi(uid: widget.uid),
-      KMS(),
+      Table_Gizi(uid: widget.uid, gender: widget.gender),
+      KMS(uid: widget.uid, male: true),
     ];
   }
 

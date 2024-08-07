@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:intl/intl.dart';
+import 'package:sipanda/contents/BBlist.dart';
 
 class Table_Gizi extends StatefulWidget {
   final String uid;
-  const Table_Gizi({super.key, required this.uid});
+  final String gender;
+  const Table_Gizi({super.key, required this.uid, required this.gender});
 
   @override
   State<Table_Gizi> createState() => _Table_GiziState();
@@ -75,12 +77,6 @@ class _Table_GiziState extends State<Table_Gizi> {
         );
       },
     );
-  }
-
-  String getDate(Timestamp tgl){
-    final DateTime dateTime = tgl.toDate();
-    var formatTanggal ="${dateTime.day}-${dateTime.month}-${dateTime.year}";
-    return formatTanggal;
   }
 
   @override
@@ -165,7 +161,14 @@ class _Table_GiziState extends State<Table_Gizi> {
                               DataCell(snapshot.data!.docs[i]['periksa']?Text('${snapshot.data!.docs[i]['BB']} Kg'): const Text('-')),
                               DataCell(snapshot.data!.docs[i]['periksa']?Text('${snapshot.data!.docs[i]['TB']} Cm'): const Text('-')),
                               DataCell(snapshot.data!.docs[i]['periksa']?Text("${snapshot.data!.docs[i]['LK']} Cm"): const Text('-')),
-                              const DataCell(Text('N/B')),
+                              DataCell(snapshot.data!.docs[i]['bulan'] == 0 ? const Text(' ') : 
+                                      snapshot.data!.docs[i]['periksa'] ? 
+                                      Text(generateKeterangan(
+                                        snapshot.data!.docs[i]['BB'].toDouble(), 
+                                        snapshot.data!.docs[i-1]['BB'].toDouble(),
+                                        snapshot.data!.docs[i]['bulan'] as int,
+                                        widget.gender == 'Laki-laki'? true : false,
+                                        !(snapshot.data!.docs[i-1]['periksa']))) : const Text('-')),
                               DataCell(
                                 Center(child: Row(
                                   children: [

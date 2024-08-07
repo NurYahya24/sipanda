@@ -71,24 +71,25 @@ class AppsBar extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(child: Text(
-                                "Halo,  ${snapshot.data?.docs[indeks]['nama']}",
-                                style: Theme.of(context).textTheme.titleLarge,
+                          Flexible(child: 
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Halo,  ${snapshot.data?.docs[indeks]['nama']}",
+                                  style: Theme.of(context).textTheme.titleLarge,
                                 ),
-                              ),
-                              Text(
-                                snapshot.data?.docs[indeks]["level"],
-                                style: const TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
-                              )
-                            ],
+                                Text(
+                                  snapshot.data?.docs[indeks]["level"],
+                                  style: const TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.w300)
+                                )
+                              ],
+                            ),
                           ),
                           CircleAvatar(
                             radius: 42,
-                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                             child: CircleAvatar(
                               radius: 40,
                               backgroundImage: Image.asset("images/avatar${snapshot.data!.docs[indeks]['avatar']}.png").image,
@@ -157,7 +158,9 @@ class CategoryCard extends StatelessWidget {
          Navigator.push(
           context, 
           MaterialPageRoute(
-            builder: (context) => category.destinationPage));
+            builder: (context) => category.destinationPage
+          )
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(10),
