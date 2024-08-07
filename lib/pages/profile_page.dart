@@ -208,7 +208,36 @@ class _Profile_PageState extends State<Profile_Page> {
                 title: Text('Keluar', style: Theme.of(context).textTheme.bodyMedium,),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: (){
-                  showAlertDialog(context, 'Keluar', 'Anda yakin ingin keluar?');
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Keluar"),
+                        content: const Text("Apakah Anda yakin ingin keluar?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Batal", style: TextStyle(color: Color(0xFF4D80DF),),),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Anda telah berhasil logout.'),
+                                  backgroundColor:Color(0xFF4D80DF),
+                                ),
+                              );
+                              
+                            },
+                            child: const Text("Keluar", style: TextStyle(color: Color(0xFF4D80DF),),),
+                          )
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -216,7 +245,7 @@ class _Profile_PageState extends State<Profile_Page> {
           Padding(
             padding: const EdgeInsets.only(bottom: 5),
             child: Card(
-              color: Color.fromARGB(255, 252, 172, 167),
+              color: const Color.fromARGB(255, 252, 172, 167),
               elevation: 4,
               shadowColor: Colors.black12,
               child: ListTile(
@@ -224,7 +253,30 @@ class _Profile_PageState extends State<Profile_Page> {
                 title: Text('Hapus Akun', style: Theme.of(context).textTheme.bodyMedium,),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: (){
-                  
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Konfirmasi"),
+                        content: const Text("Apakah Anda yakin ingin menghapus Akun?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Batal", style: TextStyle(color:Color(0xFF4D80DF)),),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              
+                            },
+                            child: const Text("Hapus", style: TextStyle(color: Color(0xFF4D80DF)),),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -271,7 +323,8 @@ class _Profile_PageState extends State<Profile_Page> {
                 Navigator.pop(context);
               }, 
               child: const Text(
-                'Batal'                
+                'Batal',   
+                style: TextStyle(color: Color(0xFF4D80DF),),             
               )
             ),
             TextButton(

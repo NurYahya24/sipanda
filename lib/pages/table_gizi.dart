@@ -62,16 +62,22 @@ class _Table_GiziState extends State<Table_Gizi> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Batal'),
+              child: const Text('Batal', style: TextStyle(color:Color(0xFF4D80DF))),
             ),
             TextButton(
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false){
                   CheckUp(_tglUnformatted!, double.parse(BBcontroller.text), double.parse(PBcontroller.text), double.parse(LKcontroller.text), uid, idCheckUp);
                   Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Data berhasil disimpan.'),
+                      backgroundColor:Color(0xFF4D80DF),
+                    ),
+                  );
                 }                
               },
-              child: const Text('Simpan'),
+              child: const Text('Simpan', style: TextStyle(color:Color(0xFF4D80DF))),
             ),
           ],
         );
@@ -179,15 +185,50 @@ class _Table_GiziState extends State<Table_Gizi> {
                                         showDialogWithFields("${data['bulan']} bulan",true, data['tgl-periksa'].toDate(), getDate(data['tgl-periksa'] as Timestamp), data['BB'], data['TB'], data['LK'], widget.uid, data.id) :
                                         showDialogWithFields("${data['bulan']} bulan",false, Timestamp.now().toDate(), '', 0, 0, 0, widget.uid, data.id);
                                       },
-                                      child: snapshot.data!.docs[i]['periksa'] ? const Text('Edit') : const Text('Tambah'),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color(0xFF4D80DF), 
+                                        ),
+                                      child: snapshot.data!.docs[i]['periksa'] ? const Text('Edit', style: TextStyle(color: Colors.white),) : const Text('Tambah', style: TextStyle(color: Colors.white),),
                                     ),
                                     Visibility(
                                       visible: snapshot.data!.docs[i]['periksa'],
                                       child: ElevatedButton(
                                         onPressed: (){
-                                          delCheckUp(widget.uid, snapshot.data!.docs[i].id);
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text("Konfirmasi"),
+                                                content: const Text("Apakah Anda yakin ingin menghapus data?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: const Text("Batal", style: TextStyle(color:Color(0xFF4D80DF)),),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text('Data berhasil dihapus.'),
+                                                          backgroundColor:Color(0xFF4D80DF),
+                                                        ),
+                                                      );
+                                                      delCheckUp(widget.uid, snapshot.data!.docs[i].id);
+                                                    },
+                                                    child: const Text("Hapus", style: TextStyle(color: Color(0xFF4D80DF)),),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
-                                        child: const Text('Hapus'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                        ),
+                                        child: const Text('Hapus', style: TextStyle(color: Colors.white),)
                                       )
                                     )
                                   ],

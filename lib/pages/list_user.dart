@@ -122,24 +122,53 @@ class _List_User_PageState extends State<List_User_Page> {
                                         switchUser(docID, value, false);
                                       },
                                       activeColor: Colors.white,
-                                      activeTrackColor: Color.fromRGBO(224, 46, 129, 1),
+                                      activeTrackColor: const Color.fromRGBO(224, 46, 129, 1),
                                       inactiveThumbColor: Colors.white,
                                       inactiveTrackColor: Colors.grey,
                                     )
                                   ), 
                                   onLongPress: (){
-                                    switchUser(docID, true, true);
+                                   showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Konfirmasi'),
+                                          content: const Text('Apakah Anda yakin ingin mengubah akun ini menjadi admin?'),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text('Batal', style: TextStyle(color: Color(0xFF4D80DF))),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('Ya', style: TextStyle(color: Color(0xFF4D80DF))),
+                                              onPressed: () {
+                                                switchUser(docID, true, true);
+                                                Navigator.of(context).pop();
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text('Akun berhasil diubah menjadi admin.'),
+                                                    backgroundColor:Color(0xFF4D80DF),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                               ),
                             );
-                          }
+                          },
                         );
                       }
                     }
                 }
-              }
-            ) 
+              },
+            ),
           ],
         ),
       ),
