@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -46,29 +45,10 @@ class _PdfViewerState extends State<PdfViewer> {
     );
   }
 
-  Future<void> _saveAsFile(
-    BuildContext context,
-    LayoutCallback build,
-    PdfPageFormat pageFormat,
-  ) async {
-    final bytes = await build(pageFormat);
-
-    final appDocDir = await getApplicationDocumentsDirectory();
-    final appDocPath = appDocDir.path;
-    final file = File('$appDocPath/document.pdf');
-    await file.writeAsBytes(bytes);
-    await OpenFile.open(file.path);
-  }
   @override
   Widget build(BuildContext context) {
     pw.RichText.debug = true;
 
-    final actions = <PdfPreviewAction>[
-      PdfPreviewAction(
-        icon: const Icon(Icons.save),
-        onPressed: _saveAsFile,
-      )
-    ];
     
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +57,6 @@ class _PdfViewerState extends State<PdfViewer> {
       body: PdfPreview(
                 maxPageWidth: 700,
                 build: (format) => generateReport(widget.gender, widget.uid),
-                actions: actions,
                 onPrinted: _showPrintedToast,
                 onShared: _showSharedToast,
               )
