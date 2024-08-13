@@ -510,7 +510,7 @@ Future<Uint8List> generateReport(String gender, String uid) async {
                             borderRadius: pw.BorderRadius.all(pw.Radius.circular(5)),
                             color: PdfColors.red
                             ),
-                          child: pw.Center(child: pw.Text('NAIK (T)', style: const pw.TextStyle(color: PdfColors.white))),
+                          child: pw.Center(child: pw.Text('NAIK (N)', style: const pw.TextStyle(color: PdfColors.white))),
                         ),
                         pw.Expanded(
                           child: pw.Text(

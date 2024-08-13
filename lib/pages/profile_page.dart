@@ -274,8 +274,18 @@ class _Profile_PageState extends State<Profile_Page> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Anda telah berhasil menghapus akun.'),
+                                  backgroundColor:Color(0xFF4D80DF),
+                                ),
+                              );   
                             },
                             child: const Text("Hapus", style: TextStyle(color: Color(0xFF4D80DF)),),
                           ),

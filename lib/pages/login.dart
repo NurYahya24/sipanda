@@ -45,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
       );
       setState(() => _loading = false);
     } catch (e) {
-      print('Error saat login: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -68,17 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Anda berhasil login.'),
-                      backgroundColor:Color(0xFF4D80DF),
-                    ),
-                  );
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                  );
+                  Navigator.pop(context);
                   setState(() => _loading = false);
                 },
                 child: const Text(

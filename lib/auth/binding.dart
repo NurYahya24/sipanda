@@ -234,4 +234,17 @@ Future <QuerySnapshot> getDataGizi(String uid, bool everything){
   }
 }
 
+void delAkun(){
+  FirebaseAuth user = FirebaseAuth.instance;
+  final String uid = user.currentUser!.uid;
+  delDocumentAccount(uid);
+  user.currentUser!.delete();
+}
+
+delDocumentAccount(String uid){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  db.collection('user')
+    .doc(uid)
+    .delete();
+}
 

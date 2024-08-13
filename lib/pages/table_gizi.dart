@@ -167,14 +167,14 @@ class _Table_GiziState extends State<Table_Gizi> {
                               DataCell(snapshot.data!.docs[i]['periksa']?Text('${snapshot.data!.docs[i]['BB']} Kg'): const Text('-')),
                               DataCell(snapshot.data!.docs[i]['periksa']?Text('${snapshot.data!.docs[i]['TB']} Cm'): const Text('-')),
                               DataCell(snapshot.data!.docs[i]['periksa']?Text("${snapshot.data!.docs[i]['LK']} Cm"): const Text('-')),
-                              DataCell(snapshot.data!.docs[i]['bulan'] == 0 ? const Text(' ') : 
+                              DataCell(i < 1 ? const Text(' ') : 
                                       snapshot.data!.docs[i]['periksa'] ? 
                                       Text(generateKeterangan(
                                         snapshot.data!.docs[i]['BB'].toDouble(), 
-                                        snapshot.data!.docs[i-1]['BB'].toDouble(),
+                                        snapshot.data!.docs[(snapshot.data!.docs[i]['bulan']) - 1]['BB'].toDouble(),
                                         snapshot.data!.docs[i]['bulan'] as int,
                                         widget.gender == 'Laki-laki'? true : false,
-                                        !(snapshot.data!.docs[i-1]['periksa']))) : const Text('-')),
+                                        !(snapshot.data!.docs[(snapshot.data!.docs[i]['bulan']) - 1]['periksa']))) : const Text('-')),
                               DataCell(
                                 Center(child: Row(
                                   children: [
