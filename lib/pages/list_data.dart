@@ -61,89 +61,120 @@ class _List_Data_PageState extends State<List_Data_Page> {
                     final Timestamp timestamp = snapshot.data?.docs[index]['tgl-lahir'] as Timestamp;
                     final DateTime dateTime = timestamp.toDate();
                     var formatTanggal ="${dateTime.day}-${dateTime.month}-${dateTime.year}";
-                    return InkWell(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.only(left: 12),
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            child: CircleAvatar(
-                              backgroundColor: Color.fromARGB(255, 216, 174, 255),
-                              radius: 50,
-                              child: ClipOval(
-                                child: snapshot.data!.docs[index]['jenkel'] == 'Laki-laki' ? Image.asset('images/anakM.png',) : Image.asset('images/anakF.png'),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.03,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 10
-                            ),
-                            width: MediaQuery.of(context).size.width * 0.77,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data!.docs[index]['nama'],
-                                  style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold
+                    final item = snapshot.data!.docs[index].id;
+                    return Dismissible(
+                      key: Key(item),
+                      onDismissed: (direction) {
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context){
+                            return AlertDialog(
+                              title: const Text('Hapus Data Bayi'),
+                              content: const Text('Yakin ingin menghapus data?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                    setState(() {
+                                      
+                                    });
+                                  }, 
+                                  child: const Text('batal')),
+                                TextButton(
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                    delData(item);
+                                  }, 
+                                  child: const Text('Ya'))
+                              ],
+                            );
+                          });
+                      },
+                      child: 
+                        InkWell(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(left: 12),
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                child: CircleAvatar(
+                                  backgroundColor: Color.fromARGB(255, 216, 174, 255),
+                                  radius: 50,
+                                  child: ClipOval(
+                                    child: snapshot.data!.docs[index]['jenkel'] == 'Laki-laki' ? Image.asset('images/anakM.png',) : Image.asset('images/anakF.png'),
                                   ),
                                 ),
-                                const SizedBox(height: 5,),
-                                Text(
-                                  formatTanggal
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.03,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 10
                                 ),
-                                Text(
-                                  snapshot.data!.docs[index]['ortu']
-                                ),
-                                const SizedBox(height: 10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                width: MediaQuery.of(context).size.width * 0.77,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Flexible(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(2),
-                                          border: Border.all(color: Colors.black)
-                                        ),
-                                        child: Text(snapshot.data!.docs[index]['alamat']),
+                                    Text(
+                                      snapshot.data!.docs[index]['nama'],
+                                      style: const TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold
                                       ),
                                     ),
-                                    
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 12),
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(255, 154, 199, 236),
-                                        borderRadius: BorderRadius.circular(2),
-                                        border: Border.all(
-                                          color: const Color.fromARGB(255, 154, 199, 236)
+                                    const SizedBox(height: 5,),
+                                    Text(
+                                      formatTanggal
+                                    ),
+                                    Text(
+                                      snapshot.data!.docs[index]['ortu']
+                                    ),
+                                    const SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(2),
+                                              border: Border.all(color: Colors.black)
+                                            ),
+                                            child: Text(snapshot.data!.docs[index]['alamat']),
+                                          ),
+                                        ),
+                                        
+                                        Container(
+                                          margin: const EdgeInsets.only(right: 12),
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(255, 154, 199, 236),
+                                            borderRadius: BorderRadius.circular(2),
+                                            border: Border.all(
+                                              color: const Color.fromARGB(255, 154, 199, 236)
+                                            )
+                                          ),
+                                          child: Text(snapshot.data!.docs[index]['posyandu'],style: const TextStyle(color: Colors.black),),
                                         )
-                                      ),
-                                      child: Text(snapshot.data!.docs[index]['posyandu'],style: const TextStyle(color: Colors.black),),
-                                    )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10,),
+                                    const Divider(color: Colors.black,)
                                   ],
                                 ),
-                                const SizedBox(height: 10,),
-                                const Divider(color: Colors.black,)
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(
-                            builder: (context) => detailed_data_page(uid: snapshot.data!.docs[index].id, nama: snapshot.data!.docs[index]['nama'], gender : snapshot.data!.docs[index]['jenkel'])
-                          )
-                        );
-                      },
+                              )
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(
+                                builder: (context) => detailed_data_page(uid: snapshot.data!.docs[index].id, nama: snapshot.data!.docs[index]['nama'], gender : snapshot.data!.docs[index]['jenkel'])
+                              )
+                            );
+                          },
+                        )
                     );
                   }
                 );

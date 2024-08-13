@@ -127,7 +127,7 @@ class _List_User_PageState extends State<List_User_Page> {
                                       inactiveTrackColor: Colors.grey,
                                     )
                                   ), 
-                                  onLongPress: (){
+                                  onLongPress: data[index]['level'] == 'Admin' ? (){} : (){
                                    showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -169,6 +169,7 @@ class _List_User_PageState extends State<List_User_Page> {
                 }
               },
             ),
+            const SizedBox(height: 20,)
           ],
         ),
       ),

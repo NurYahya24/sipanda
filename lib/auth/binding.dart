@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -189,5 +191,47 @@ String getDate(Timestamp tgl){
     var formatTanggal ="${dateTime.day}-${dateTime.month}-${dateTime.year}";
     return formatTanggal;
   }
+
+void delData(String uid){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  db.collection('bayi')
+    .doc(uid)
+    .delete();
+}
+
+void updateBayi(String posyandu, String nama, String alamat, DateTime tgl, String jenkel, double bbl, double pbl, double lkl, double anak, String ortu, String uid){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final data = {
+    "posyandu" : posyandu,
+    "nama" : nama,
+    "alamat" : alamat,
+    "tgl-lahir" : tgl,
+    "jenkel" : jenkel,
+    "bbl" : bbl,
+    "pbl" : pbl,
+    "lkl" : lkl,
+    "anak" : anak,
+    "ortu" : ortu
+  };
+
+  db.collection('bayi')
+    .doc(uid)
+    .update(data);
+}
+
+Future <DocumentSnapshot> getIdentity(String uid){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  var data = db.collection('bayi').doc(uid).get();
+  return data;
+}
+
+Future <QuerySnapshot> getDataGizi(String uid, bool everything){
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  if(everything){
+    return db.collection('bayi').doc(uid).collection('data-gizi').orderBy('bulan', descending: false).get();
+  }else{
+    return db.collection('bayi').doc(uid).collection('data-gizi').where('periksa', isEqualTo: true).orderBy('bulan', descending: false).get();
+  }
+}
 
 

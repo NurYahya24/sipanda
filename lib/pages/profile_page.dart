@@ -223,7 +223,13 @@ class _Profile_PageState extends State<Profile_Page> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                               Navigator.of(context).popUntil((route) => route.isFirst);
+                                FirebaseAuth.instance.signOut();
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Anda telah berhasil logout.'),

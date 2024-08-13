@@ -5,7 +5,25 @@ import 'package:sipanda/auth/binding.dart';
 import 'package:intl/intl.dart';
 
 class InputDataPage extends StatefulWidget {
-  const InputDataPage({Key? key}) : super(key: key);
+  final String nama, tanggal, ortu, alamat, posyandu, jenkel, uid;
+  final double bbl, pbl, lkl, anak;
+  final DateTime dateTime;
+  final bool edit;
+  const InputDataPage({
+    super.key, 
+    required this.nama, 
+    required this.tanggal, 
+    required this.ortu,
+    required this.alamat,
+    required this.posyandu,
+    required this.jenkel,
+    required this.bbl,
+    required this.pbl,
+    required this.lkl,
+    required this.anak,
+    required this.dateTime,
+    required this.edit,
+    required this.uid});
 
   @override
   _InputDataPageState createState() => _InputDataPageState();
@@ -27,16 +45,45 @@ class _InputDataPageState extends State<InputDataPage> {
 
 
   void _handleGenderChange(String? value) {
-  setState(() {
-    _selectedGender = value;
-  });
-}
+    setState(() {
+      _selectedGender = value;
+    });
+  }
 
-void _handlePlaceChange(String? value) {
-  setState(() {
-    _selectedPlace = value;
-  });
-}
+  void _handlePlaceChange(String? value) {
+    setState(() {
+      _selectedPlace = value;
+    });
+  }
+
+  @override
+  void initState() {
+      super.initState();
+      setState(() {
+        if(widget.edit){
+          _nama.text = widget.nama;
+          _tgl.text = widget.tanggal;
+          _ortu.text = widget.ortu;
+          _alamat.text = widget.alamat;
+          _selectedGender = widget.jenkel;
+          _BBL.text = widget.bbl.toString();
+          _PBL.text = widget.pbl.toString();
+          _LKL.text = widget.lkl.toString();
+          _anak.text = widget.lkl.toString();
+          _tglUnformatted = widget.dateTime;
+
+        }else{
+          _nama.text = '';
+          _tgl.text = '';
+          _ortu.text = '';
+          _alamat.text = '';
+          _BBL.text = '';
+          _PBL.text = '';
+          _LKL.text = '';
+          _anak.text = '';
+        }
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +146,34 @@ void _handlePlaceChange(String? value) {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        addBayi(_selectedPlace.toString(),_nama.text, _alamat.text, _tglUnformatted!, _selectedGender.toString(), double.parse(_BBL.text), double.parse(_PBL.text), double.parse(_LKL.text), double.parse(_anak.text), _ortu.text);
+                        try{
+                          widget.edit ? updateBayi(_selectedPlace.toString(),_nama.text, _alamat.text, _tglUnformatted!, _selectedGender.toString(), double.parse(_BBL.text), double.parse(_PBL.text), double.parse(_LKL.text), double.parse(_anak.text), _ortu.text, widget.uid) : addBayi(_selectedPlace.toString(),_nama.text, _alamat.text, _tglUnformatted!, _selectedGender.toString(), double.parse(_BBL.text), double.parse(_PBL.text), double.parse(_LKL.text), double.parse(_anak.text), _ortu.text);
+                          Navigator.pop(context);
+                          const SnackBar(
+                            content: Text('Data berhasil disimpan.'),
+                            backgroundColor:Color(0xFF4D80DF),
+                          );
+                        }
+                        catch(e){
+                          showDialog(
+                            context: context, 
+                            builder: (BuildContext context){
+                              return AlertDialog(
+                                title: const Text(
+                                  'Terjadi Kesalahan'
+                                ),
+                                content: Text('$e'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    }, 
+                                    child: const Text('Ok'))
+                                ],
+                              );
+                            }
+                          );                         
+                        }   
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -169,8 +243,8 @@ void _handlePlaceChange(String? value) {
   Widget _textField(String hintText, IconData icon, bool isPassword, bool isDigit, TextEditingController lController) {
     return TextFormField(
       controller: lController,
-      keyboardType: isDigit? TextInputType.numberWithOptions(decimal:true) : TextInputType.text,
-      inputFormatters: isDigit ? [FilteringTextInputFormatter.allow(RegExp(r'^[0-9]+.?[0-9]*'))] : null,
+      keyboardType: isDigit? const TextInputType.numberWithOptions(decimal:true) : TextInputType.text,
+      inputFormatters: isDigit ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))] : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$hintText Harus Diisi';

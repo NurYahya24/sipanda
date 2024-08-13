@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sipanda/auth/auth.dart';
 import 'package:sipanda/pages/home.dart';
 import 'package:sipanda/pages/regis.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,6 +35,12 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const Home(),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Berhasil Masuk'),
+          backgroundColor:Color(0xFF4D80DF),
         ),
       );
       setState(() => _loading = false);
@@ -83,6 +91,70 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
     setState(() => _loading = false);
+  }
+
+  void _showDialogWithFields() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        final _resetKey = GlobalKey<FormState>();
+        var _ctrlEmailReset = TextEditingController();
+        return AlertDialog(
+          title: const Text('Form Reset Password', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+          content: SingleChildScrollView(
+            child: Form(
+              key: _resetKey,
+              child:
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    customTextField('email', Icons.mail, false, _ctrlEmailReset)                   
+                  ],
+                ), 
+              )
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Batal', style: TextStyle(color:Color(0xFF4D80DF))),
+            ),
+            TextButton(
+              onPressed: () {
+                if (_resetKey.currentState?.validate() ?? false){
+                  Navigator.pop(context);
+                  try{
+                    FirebaseAuth.instance.sendPasswordResetEmail(email: _ctrlEmailReset.text);
+                  }catch (e){
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Terjadi kesalahan'),
+                          content: Text('$e'),
+                          actions: [
+                            TextButton(
+                              onPressed: (){
+                                Navigator.pop(context);
+                              }, 
+                              child: const Text('Ok'))
+                          ],
+                        );
+                      });
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Silahkan cek email anda'),
+                      backgroundColor:Color(0xFF4D80DF),
+                    ),
+                  );
+                }                
+              },
+              child: const Text('Kirim', style: TextStyle(color:Color(0xFF4D80DF))),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -182,7 +254,9 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _showDialogWithFields();
+                            },
                             child: const Text(
                               'Lupa Kata Sandi?',
                               style: TextStyle(
@@ -199,6 +273,13 @@ class _LoginPageState extends State<LoginPage> {
                         height: 60,
                         child: ElevatedButton(
                           onPressed: () => handleSubmit(),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
                           child : _loading
                               ? const SizedBox(
                                   width: 20,
@@ -208,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
                                     strokeWidth: 2,
                                   ),
                                 )
-                              : Text(
+                              : const Text(
                                   'Masuk',
                                   style: TextStyle(
                                     color: Colors.blue,
@@ -216,13 +297,6 @@ class _LoginPageState extends State<LoginPage> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -264,6 +338,29 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+  Widget customTextField(String hintText, IconData icon, bool isPassword, TextEditingController lController) {
+    return TextFormField(
+      controller: lController,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return '$hintText Harus Diisi';
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Colors.blueGrey),
+        prefixIcon: Icon(icon, color: Colors.blueGrey),
+        filled: true,
+        fillColor: Colors.white70,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      style: const TextStyle(color: Colors.blueGrey),
     );
   }
 }

@@ -1,29 +1,15 @@
-import 'dart:ui';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sipanda/pages/add_data.dart';
-import 'package:sipanda/pages/list_data.dart';
+import 'package:sipanda/pages/list_rekap.dart';
 
-class Read_Data_Page extends StatefulWidget {
-  const Read_Data_Page({super.key});
+class RekapDataPage extends StatefulWidget {
+  const RekapDataPage({super.key});
 
   @override
-  State<Read_Data_Page> createState() => _Read_Data_PageState();
+  State<RekapDataPage> createState() => _RekapDataPageState();
 }
 
-class _Read_Data_PageState extends State<Read_Data_Page> {
-  TextEditingController searchController = TextEditingController();
+class _RekapDataPageState extends State<RekapDataPage> {
   int selectIndex = 0;
-  String searchQuery = ""; 
-
-  void updateSearchQuery(String query){
-    setState(() {
-      searchQuery = query;
-    });
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,7 +17,7 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Data Bayi", style: Theme.of(context).textTheme.titleLarge, ),
+            title: Text("Rekap Data", style: Theme.of(context).textTheme.titleLarge, ),
             backgroundColor: const Color(0xFF4D80DF),
             iconTheme: const IconThemeData(color: Colors.white,),
             elevation: 0.0,
@@ -39,37 +25,7 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20,),
-              Padding
-              (padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                height: 45,
-                child: TextField(
-                  onTapOutside: (event){
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  controller: searchController,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(0),
-                      prefixIcon: const Icon(Icons.search_outlined),
-                      hintText: 'Cari Nama Bayi',
-                      fillColor: const Color.fromARGB(255, 154, 199, 236),
-                      filled: true,
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.white),
-                      ),
-                    ),
-                    onChanged: updateSearchQuery,
-                ),
-              ),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Expanded(
                 child: Column(
                   children: [
@@ -161,20 +117,17 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
                         ),
                       ),
                     ),
-                     Expanded(
+                     const Expanded(
                       child: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         children: [
-                          List_Data_Page(
-                            searchQuery: searchQuery,
+                          RekapDetailed(
                             filter: 'Semua',
                           ),
-                          List_Data_Page(
-                            searchQuery: searchQuery,
+                          RekapDetailed(
                             filter: 'Anggrek',
                           ),
-                          List_Data_Page(
-                            searchQuery: searchQuery,
+                          RekapDetailed(
                             filter: 'Cempaka',
                           ),
                         ],
@@ -185,39 +138,20 @@ class _Read_Data_PageState extends State<Read_Data_Page> {
               ),
             ],
           ),
-        floatingActionButton: FloatingActionButton.extended(
-        tooltip: 'Tambah Data Bayi',
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => InputDataPage(
-                  nama: '',
-                  tanggal: '',
-                  ortu: '',
-                  alamat: '',
-                  posyandu: '',
-                  jenkel: '',
-                  bbl: 0,
-                  pbl: 0,
-                  lkl: 0,
-                  anak: 0,
-                  dateTime: Timestamp.now().toDate(),
-                  edit: false,
-                  uid: '',)),
-          );
-        },
-        backgroundColor: const Color(0xFF4D80DF),
-        label: const Text(
-          'Tambah Data',
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontWeight: FontWeight.w500,
-            ),
-        ),
-        icon: const Icon(Icons.add, color: Colors.white,size: 25),
-      ),)
+          floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    // Navigator.push(
+                    //   context, 
+                    //   MaterialPageRoute(
+                    //     builder: (context) => PdfViewer(uid : widget.uid, gender: widget.gender)
+                    //   )
+                    // );
+                  },
+                  backgroundColor: const Color(0xFF4D80DF),
+                  tooltip: 'Print',
+                  child : const Icon(Icons.print, color: Colors.white,),
+                  ),
+        )
       )
     );
   }

@@ -153,44 +153,119 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-         Navigator.push(
-          context, 
-          MaterialPageRoute(
-            builder: (context) => category.destinationPage
-          )
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.1),
-              blurRadius: 4.0,
-              spreadRadius: .05,
-            )
-          ]
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Image.asset(
-                category.thumbnail,
-                height: 120,
-              ),
-            ),
-            const SizedBox(height: 10,),
-            Text(category.nama),
-            Text(category.subNama, style: Theme.of(context).textTheme.bodySmall,)
-          ],
-        ),
-      ),
-    );
+    return StreamBuilder(
+      stream: whoAmI(), 
+      builder: (context, snapshot){
+        switch (snapshot.connectionState){
+          case ConnectionState.waiting :
+            return const Center(child: CircularProgressIndicator(),);
+          default :
+            if(snapshot.hasError){
+              return const Text('Error saat membaca data');
+            }else{
+              int indeks = 0;
+              int panjang = snapshot.data?.docs.length as int;
+              for (int i =0; i<panjang; i++){
+                if(snapshot.data!.docs[i].id == FirebaseAuth.instance.currentUser!.uid){
+                  indeks = i;
+                }
+              }
+              return GestureDetector(
+                onTap: category.permission == 'ALL' ?
+                  () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => category.destinationPage
+                    )
+                  );
+                } : category.permission == 'Admin'? snapshot.data!.docs[indeks]['level'] == 'Admin' ? (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => category.destinationPage
+                    )
+                  );
+                } : (){
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: const Text('Tidak Punya Akses'),
+                        content: const Text('Silahkan Hubungi Admin'),
+                        actions: [
+                          TextButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            }, 
+                            child: const Text('Ok'))
+                        ],
+                      );
+                    });
+                } : snapshot.data!.docs[indeks]['level'] == 'Kader' ? (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => category.destinationPage
+                    )
+                  );
+                } : snapshot.data!.docs[indeks]['level'] == 'Admin'? (){
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => category.destinationPage
+                    )
+                  );
+                } : (){
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: const Text('Tidak Punya Akses'),
+                        content: const Text('Silahkan Hubungi Admin'),
+                        actions: [
+                          TextButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            }, 
+                            child: const Text('Ok'))
+                        ],
+                      );
+                    });
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.1),
+                        blurRadius: 4.0,
+                        spreadRadius: .05,
+                      )
+                    ]
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Image.asset(
+                          category.thumbnail,
+                          height: 120,
+                        ),
+                      ),
+                      const SizedBox(height: 10,),
+                      Text(category.nama),
+                      Text(category.subNama, style: Theme.of(context).textTheme.bodySmall,)
+                    ],
+                  ),
+                ),
+              );
+            }
+        }
+      });
+    
   }
 }

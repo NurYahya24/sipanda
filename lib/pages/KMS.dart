@@ -21,9 +21,8 @@ List _listPlus2SDFemale = BBFemale.BBFemalePlus2SD;
 List _listPlus3SDFemale = BBFemale.BBFemalePlus3SD;
 
 class _LineChart extends StatelessWidget {
-  final bool male;
-  final String uid;
-  const _LineChart({required this.male, required this.uid});
+  final String uid, gender;
+  const _LineChart({required this.gender, required this.uid});
   
 
   @override
@@ -41,7 +40,7 @@ class _LineChart extends StatelessWidget {
             else{
               var dataPoints = snapshot.data!;
               return LineChart(
-                male ? sampleData1(dataPoints) : sampleData2(dataPoints),
+                gender == 'Laki-laki' ? sampleData1(dataPoints) : sampleData2(dataPoints),
               );
             }  
         }
@@ -428,8 +427,8 @@ class _LineChart extends StatelessWidget {
 
 class KMS extends StatefulWidget {
   final String uid;
-  final bool male;
-  const KMS({super.key, required this.uid, required this.male});
+  final String gender;
+  const KMS({super.key, required this.uid, required this.gender});
 
   @override
   State<StatefulWidget> createState() => KMSState();
@@ -453,9 +452,9 @@ class KMSState extends State<KMS> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const Text(
-                'Laki-laki',
-                style: TextStyle(
+              Text(widget.gender == 'Laki-laki'?
+                'Laki-laki' : 'Perempuan',
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -469,7 +468,7 @@ class KMSState extends State<KMS> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(right: 6, left: 6),
-                  child: _LineChart(uid: widget.uid, male: widget.male),
+                  child: _LineChart(uid: widget.uid, gender: widget.gender,),
                 ),
               ),
               const SizedBox(

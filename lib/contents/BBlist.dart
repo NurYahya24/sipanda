@@ -1031,7 +1031,7 @@ String generateKeterangan(double bb, double bbPrev, int bulan, bool male, bool p
   //logics of B
   if(male){
     if(bb < BBMale.BBmaleMin3SD[bulan].score){
-      B = '△';
+      B = 'M';
     }else if(bb >= BBMale.BBmaleMin3SD[bulan].score && bb < BBMale.BBmaleMin2SD[bulan].score){
       B = 'K';
     }else{
@@ -1039,7 +1039,7 @@ String generateKeterangan(double bb, double bbPrev, int bulan, bool male, bool p
     }
   }else{
     if(bb < BBFemale.BBFemaleMin3SD[bulan].score){
-      B = '△';
+      B = 'M';
     }else if(bb >= BBFemale.BBFemaleMin3SD[bulan].score && bb < BBFemale.BBFemaleMin2SD[bulan].score){
       B = 'K';
     }else{

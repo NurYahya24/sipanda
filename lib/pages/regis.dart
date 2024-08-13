@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sipanda/auth/auth.dart';
 import 'package:sipanda/pages/login.dart';
@@ -43,7 +44,35 @@ class _RegisPageState extends State<RegisPage> {
       setState(() => _loading = false);
       return;
     }
-    await Auth().regis(email, password, name, posyandu.toString(), level.toString());
+    try{
+      await Auth().regis(email, password, name, posyandu.toString(), level.toString());
+      FirebaseAuth.instance.signOut();
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Akun Berhasil Didaftarkan'),
+          backgroundColor:Color(0xFF4D80DF),
+        ),
+      );
+    } catch (e) {
+      showDialog(
+        context: context, 
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: const Text(
+              'Terjadi Kesalahan'
+            ),
+            content: Text('$e'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                }, 
+                child: const Text('Ok'))
+            ],
+          );
+        });
+    }
     setState(() => _loading = false);
   }
 

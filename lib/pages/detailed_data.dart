@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/pages/KMS.dart';
+import 'package:sipanda/pages/add_data.dart';
 import 'package:sipanda/pages/pdf_view.dart';
 import 'package:sipanda/pages/table_gizi.dart';
 
@@ -22,34 +23,73 @@ class _detailed_data_pageState extends State<detailed_data_page> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.nama, style: Theme.of(context).textTheme.titleLarge,),
-          backgroundColor: const Color(0xFF4D80DF),
-          iconTheme: const IconThemeData(color: Colors.white,),
-          elevation: 0.0,
-          ),
-        body: Column(
-          children: [
-            Header(uid: widget.uid,),
-            Expanded(child: Content(uid: widget.uid, gender: widget.gender,)),
-            const SizedBox(height: 40,)
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context, 
-            MaterialPageRoute(
-              builder: (context) => PdfViewer(uid : widget.uid, gender: widget.gender)
-            )
-          );
-        },
-        backgroundColor: const Color(0xFF4D80DF),
-        tooltip: 'Print',
-        child : const Icon(Icons.print, color: Colors.white,),
-        ),
-      ),
+      child: StreamBuilder(
+        stream: fetchInfo(widget.uid), 
+        builder: (context, snapshot){
+          switch(snapshot.connectionState){
+            case ConnectionState.waiting :
+              return const Center(child: CircularProgressIndicator(),);
+            default : 
+              if(snapshot.hasError){
+                return const Text('Error saat membaca data...');
+              }else{
+                var data = snapshot.data!;
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text(widget.nama, style: Theme.of(context).textTheme.titleLarge,),
+                    backgroundColor: const Color(0xFF4D80DF),
+                    iconTheme: const IconThemeData(color: Colors.white,),
+                    elevation: 0.0,
+                    actions: [
+                        IconButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InputDataPage(
+                                  nama: data['nama'],
+                                  tanggal: getDate(data['tgl-lahir']),
+                                  ortu: data['ortu'],
+                                  alamat: data['alamat'],
+                                  posyandu: data['posyandu'],
+                                  jenkel: data['jenkel'],
+                                  bbl: data['bbl'],
+                                  pbl: data['pbl'],
+                                  lkl: data['lkl'],
+                                  anak: data['anak'],
+                                  dateTime: data['tgl-lahir'].toDate(),
+                                  edit: true,
+                                  uid: widget.uid)),
+                          );
+                        }, 
+                        icon: const Icon(Icons.edit, color: Colors.white,))
+                    ],
+                    ),
+                  body: Column(
+                    children: [
+                      Header(uid: widget.uid,),
+                      Expanded(child: Content(uid: widget.uid, gender: widget.gender,)),
+                      const SizedBox(height: 40,)
+                    ],
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => PdfViewer(uid : widget.uid, gender: widget.gender)
+                      )
+                    );
+                  },
+                  backgroundColor: const Color(0xFF4D80DF),
+                  tooltip: 'Print',
+                  child : const Icon(Icons.print, color: Colors.white,),
+                  ),
+                );
+              }
+          }
+        })
+      
     );
   }
 }
@@ -350,7 +390,7 @@ class _ContentState extends State<Content> {
     _pages = [
       informasi(uid: widget.uid),
       Table_Gizi(uid: widget.uid, gender: widget.gender),
-      KMS(uid: widget.uid, male: true),
+      KMS(uid: widget.uid, gender: widget.gender),
     ];
   }
 

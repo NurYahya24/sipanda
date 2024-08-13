@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:sipanda/auth/binding.dart';
 import 'package:sipanda/graph/bayi_report.dart';
 
 class PdfViewer extends StatefulWidget {
@@ -75,24 +74,30 @@ class _PdfViewerState extends State<PdfViewer> {
       appBar: AppBar(
         title: const Text('PDF View'),
       ),
-      body: 
-      StreamBuilder(
-        stream: fetchDataGizi(widget.uid, true), 
-        builder: (context, snapshot){
-          switch (snapshot.connectionState){
-            case ConnectionState.waiting :
-              return const Center(child: CircularProgressIndicator());
-            default :
-              return PdfPreview(
+      body: PdfPreview(
                 maxPageWidth: 700,
-                build: (format) => generateReport(snapshot.data!.docs, widget.gender),
+                build: (format) => generateReport(widget.gender, widget.uid),
                 actions: actions,
                 onPrinted: _showPrintedToast,
                 onShared: _showSharedToast,
-              );
-          }
-        }
-      )
+              )
+      // StreamBuilder(
+      //   stream: fetchDataGizi(widget.uid, false), 
+      //   builder: (context, snapshot){
+      //     switch (snapshot.connectionState){
+      //       case ConnectionState.waiting :
+      //         return const Center(child: CircularProgressIndicator());
+      //       default :
+      //         return PdfPreview(
+      //           maxPageWidth: 700,
+      //           build: (format) => generateReport(snapshot.data!.docs, widget.gender, widget.uid),
+      //           actions: actions,
+      //           onPrinted: _showPrintedToast,
+      //           onShared: _showSharedToast,
+      //         );
+      //     }
+      //   }
+      // )
     );
   }
 }
